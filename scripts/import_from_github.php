@@ -6,13 +6,13 @@
 // Définir un flag pour indiquer que nous sommes en mode CLI
 define('APP_RUNNING_IN_CLI', true);
 
-// Inclure les fichiers nécessaires. On remonte dans l'arborescence.
+// Inclure les fichiers nécessaires.
 require_once __DIR__ . '/../public/inc/db.php';
 require_once __DIR__ . '/../public/inc/scoring.php';
 
 function run_import() {
     echo "=============================================\n";
-    echo " Démarrage de l'importation des questionnaires \n";
+    echo " Synchronisation des quiz depuis quizzes.json \n";
     echo "=============================================\n";
 
     try {
@@ -22,11 +22,11 @@ function run_import() {
         $pdo = get_db_connection();
         echo "   Base de données prête.\n\n";
 
-        // 3. Lire les données depuis le fichier JSON
-        echo "3. Lecture du fichier JSON consolidé...\n";
+        // 2. Lire les données depuis le fichier JSON
+        echo "2. Lecture du fichier JSON consolidé...\n";
         $json_path = __DIR__ . '/../public/data/quizzes.json';
         if (!file_exists($json_path)) {
-            throw new Exception("Fichier quizzes.json introuvable. La construction a peut-être échoué.");
+            throw new Exception("Fichier quizzes.json introuvable. Exécutez d'abord 'scripts/build_quizzes_json.php'.");
         }
         $json_content = file_get_contents($json_path);
         $quizzes_data = json_decode($json_content, true);
@@ -35,9 +35,9 @@ function run_import() {
         }
         echo "   " . count($quizzes_data) . " quiz trouvé(s) dans le fichier JSON.\n\n";
 
-        // 4. Traiter chaque quiz du JSON (logique "upsert")
+        // 3. Traiter chaque quiz du JSON (logique "upsert")
         $pdo->beginTransaction();
-        echo "4. Synchronisation des quiz avec la base de données...\n";
+        echo "3. Synchronisation des quiz avec la base de données...\n";
 
         foreach ($quizzes_data as $quiz) {
             $title = $quiz['title'] ?? 'Titre inconnu';
@@ -103,14 +103,14 @@ function run_import() {
 
         $pdo->commit();
         echo "\n=============================================\n";
-        echo " Importation terminée avec succès. \n";
+        echo " Synchronisation terminée avec succès. \n";
         echo "=============================================\n";
 
     } catch (Exception $e) {
         if ($pdo && $pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        echo "\n[ERREUR FATALE] Une erreur est survenue durant l'importation : " . $e->getMessage() . "\n";
+        echo "\n[ERREUR FATALE] " . $e->getMessage() . "\n";
         exit(1);
     }
 }

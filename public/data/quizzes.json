@@ -1,503 +1,495 @@
 [
     {
-        "source_file": "excel_avance.html",
-        "title": "excel_avance",
+        "source_file": "excel_debutant.html",
+        "title": "excel_debutant",
         "questions": [
             {
-                "id": "Q1",
-                "theme": "Équipement & environnement",
-                "question": "Quel matériel possédez-vous pour suivre la formation ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Ordinateur de bureau ou portable avec Excel installé",
-                        "points": 10
-                    },
-                    {
-                        "label": "Tablette uniquement",
-                        "points": 0
-                    },
-                    {
-                        "label": "Smartphone uniquement",
-                        "points": 0
-                    },
-                    {
-                        "label": "Aucun des trois",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Parfait ! Un ordinateur avec Excel vous permettra de pratiquer confortablement.",
-                "feedback_partial": "Si vous avez un doute sur votre matériel, on peut vérifier ensemble et vous conseiller.",
-                "feedback_incorrect": "Pour profiter pleinement de la formation avancée, un ordinateur avec Excel est nécessaire.",
-                "relevance": "Le bon matériel est votre meilleur allié : pratiquer sur un ordinateur rend l’apprentissage fluide et agréable."
-            },
-            {
-                "id": "Q2",
-                "theme": "Équipement & environnement",
-                "question": "Quelle version d’Excel utilisez-vous ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Excel 2016 ou plus récent",
-                        "points": 6
-                    },
-                    {
-                        "label": "Excel 2010 ou 2013",
-                        "points": 5
-                    },
-                    {
-                        "label": "Excel Online (navigateur)",
-                        "points": 2
-                    },
-                    {
-                        "label": "LibreOffice \/ autre tableur",
-                        "points": 1
-                    },
-                    {
-                        "label": "Je ne sais pas",
-                        "points": 2
-                    }
-                ],
-                "feedback_correct": "Très bien, votre version est pleinement compatible avec les fonctionnalités abordées.",
-                "feedback_partial": "C’est jouable, mais certaines fonctions avancées peuvent varier. On vérifiera ensemble au besoin.",
-                "feedback_incorrect": "Votre outil risque de limiter certaines fonctions clés de la formation.",
-                "relevance": "La version d’Excel influe sur les fonctionnalités disponibles. Pas d’inquiétude si vous hésitez : on peut vérifier facilement."
-            },
-            {
-                "id": "Q3",
-                "theme": "Équipement & environnement",
-                "question": "Avez-vous déjà ouvert un fichier Excel ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Oui, régulièrement",
-                        "points": 4
-                    },
-                    {
-                        "label": "Oui, quelques fois",
-                        "points": 3
-                    },
-                    {
-                        "label": "Non, jamais",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Excellent, votre pratique régulière facilitera l’entrée dans les sujets avancés.",
-                "feedback_partial": "C’est un bon début ! Quelques rappels vous mettront parfaitement à l’aise.",
-                "feedback_incorrect": "Une brève initiation (1–2 h) vous aidera à prendre vos marques avant le module avancé.",
-                "relevance": "Un premier contact, même léger, rend la progression plus confortable. Chaque expérience compte."
-            },
-            {
-                "id": "Q4",
-                "theme": "Équipement & environnement",
-                "question": "Savez-vous créer un nouveau fichier Excel et l’enregistrer sous un nom précis ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Oui",
-                        "points": 6
-                    },
-                    {
-                        "label": "Non",
-                        "points": 0
-                    },
-                    {
-                        "label": "Pas sûr",
-                        "points": 2
-                    }
-                ],
-                "feedback_correct": "Parfait, c’est une base d’autonomie indispensable.",
-                "feedback_partial": "Presque ! Une petite mise au point sur la gestion des fichiers suffira.",
-                "feedback_incorrect": "Pas de souci : on peut voir ensemble la création et l’enregistrement en quelques minutes.",
-                "relevance": "Maîtriser fichiers et dossiers enlève beaucoup de frictions et vous rend autonome."
-            },
-            {
-                "id": "Q5",
-                "theme": "Bases d’Excel",
-                "question": "Comment insérer une nouvelle colonne entre deux colonnes existantes ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Clic droit > Insérer",
-                        "points": 4
-                    },
-                    {
-                        "label": "Taper \"Ajouter colonne\" dans une cellule",
-                        "points": 0
-                    },
-                    {
-                        "label": "Impossible d’ajouter entre deux colonnes",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact, c’est la méthode simple et efficace.",
-                "feedback_partial": "Il existe une méthode plus directe via le clic droit.",
-                "feedback_incorrect": "Bonne nouvelle : on peut facilement insérer une colonne via le menu contextuel.",
-                "relevance": "Ces manipulations de base rendent vos tableaux plus souples et faciles à organiser."
-            },
-            {
-                "id": "Q6",
-                "theme": "Bases d’Excel",
-                "question": "Quelle est la différence entre une cellule et une feuille ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Une cellule est une case ; une feuille regroupe des cellules",
-                        "points": 4
-                    },
-                    {
-                        "label": "C’est la même chose",
-                        "points": 0
-                    },
-                    {
-                        "label": "Une feuille est plus petite qu’une cellule",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Bien vu ! Vous distinguez les éléments essentiels d’Excel.",
-                "feedback_partial": "Presque, mais la feuille est un ensemble de cellules.",
-                "feedback_incorrect": "Rassurez-vous : c’est un point rapide à clarifier, et ensuite tout devient plus logique.",
-                "relevance": "Connaître les « briques » de base aide à construire des classeurs clairs et robustes."
-            },
-            {
-                "id": "Q7",
-                "theme": "Bases d’Excel",
-                "question": "Que s’affiche dans la cellule B3 si vous saisissez `=5+3` ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "8",
-                        "points": 4
-                    },
-                    {
-                        "label": "5+3",
-                        "points": 0
-                    },
-                    {
-                        "label": "Rien",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Parfait : la cellule affiche le résultat, la formule reste visible dans la barre de formule.",
-                "feedback_partial": "La formule est bien `=5+3`, mais elle s’affiche dans la barre de formule, pas dans la cellule.",
-                "feedback_incorrect": "La cellule affiche le résultat (8) ; la formule est visible dans la barre de formule.",
-                "relevance": "Distinguer résultat affiché et formule tapée est fondamental pour comprendre Excel."
-            },
-            {
-                "id": "Q8",
-                "theme": "Bases d’Excel",
-                "question": "Comment sélectionner rapidement toute une colonne ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Cliquer sur son en-tête (la lettre en haut)",
-                        "points": 4
-                    },
-                    {
-                        "label": "Sélectionner cellule par cellule",
-                        "points": 1
-                    },
-                    {
-                        "label": "Impossible",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact ! Un geste simple qui fait gagner beaucoup de temps.",
-                "feedback_partial": "Bonne intuition. Cliquez directement sur la lettre d’en-tête pour aller plus vite.",
-                "feedback_incorrect": "Bonne nouvelle : un clic sur la lettre en haut sélectionne toute la colonne.",
-                "relevance": "Adopter les bons réflexes accélère toutes les manipulations quotidiennes."
-            },
-            {
-                "id": "Q9",
-                "theme": "Bases d’Excel",
-                "question": "Comment gérer un texte trop large pour la cellule ? (plusieurs réponses possibles)",
+                "id": "B01",
+                "theme": "Démarrage & interface",
+                "question": "Créer un nouveau classeur vierge : (plusieurs réponses possibles)",
                 "selectionType": "multi",
                 "options": [
                     {
-                        "label": "Activer le retour à la ligne automatique",
+                        "label": "Fichier > Nouveau > Classeur vierge",
+                        "points": 3
+                    },
+                    {
+                        "label": "Ctrl+N (⌘+N sur Mac)",
                         "points": 2
                     },
                     {
-                        "label": "Réduire la taille de police",
-                        "points": 1
-                    },
-                    {
-                        "label": "Agrandir la largeur de colonne",
-                        "points": 2
+                        "label": "Insertion > Classeur",
+                        "points": 0
                     }
                 ],
-                "feedback_correct": "Parfait ! Vous connaissez plusieurs solutions : vous saurez choisir selon le contexte.",
-                "feedback_partial": "Bien joué. Il existe souvent plusieurs bonnes approches : essayez aussi l’ajustement de largeur et le retour à la ligne.",
-                "feedback_incorrect": "Pas de souci : on peut agrandir la colonne, activer le retour à la ligne ou réduire légèrement la police.",
-                "relevance": "Excel offre souvent plusieurs chemins : savoir choisir la solution adaptée est une vraie compétence."
+                "feedback_correct": "Parfait : Fichier > Nouveau ou Ctrl+N créent un nouveau classeur.",
+                "feedback_partial": "Bien vu ! Pour aller plus vite, pense aussi au raccourci Ctrl+N.",
+                "feedback_incorrect": "Astuce : passe par Fichier > Nouveau (ou Ctrl+N) pour un classeur vierge.",
+                "relevance": "Valide la capacité à démarrer sur un carnet propre avant d’exercer."
             },
             {
-                "id": "Q10",
-                "theme": "Bases d’Excel",
-                "question": "À quoi sert la poignée de recopie (petit carré en bas à droite d’une cellule) ?",
+                "id": "B02",
+                "theme": "Démarrage & interface",
+                "question": "Quelle est la différence entre un classeur et une feuille ?",
                 "selectionType": "single",
                 "options": [
                     {
-                        "label": "Copier la valeur\/la formule dans les cellules voisines",
+                        "label": "Un classeur contient une ou plusieurs feuilles",
                         "points": 4
                     },
                     {
-                        "label": "Effacer la cellule",
+                        "label": "C'est la même chose",
                         "points": 0
                     },
                     {
-                        "label": "Déplacer la cellule",
+                        "label": "Une feuille contient plusieurs classeurs",
                         "points": 0
                     }
                 ],
-                "feedback_correct": "Exact, c’est un outil de productivité incontournable.",
-                "feedback_partial": "La poignée sert surtout à recopier valeurs et formules vers d’autres cellules.",
-                "feedback_incorrect": "Astuce : la poignée permet de recopier rapidement une valeur ou une formule.",
-                "relevance": "Un geste très simple qui fait gagner énormément de temps au quotidien."
+                "feedback_correct": "Exact ! Le classeur est le fichier, la feuille est une page à l’intérieur.",
+                "feedback_partial": "Presque : le classeur est plus grand que la feuille.",
+                "feedback_incorrect": "Pas de souci : le classeur est le fichier qui contient des feuilles.",
+                "relevance": "Met en place le vocabulaire de base pour se repérer."
             },
             {
-                "id": "Q11",
-                "theme": "Logique des formules",
-                "question": "Quelle formule additionne les valeurs de A1 à A10 ?",
+                "id": "B03",
+                "theme": "Démarrage & interface",
+                "question": "Où voit-on la formule complète de la cellule sélectionnée ?",
                 "selectionType": "single",
                 "options": [
                     {
-                        "label": "=SOMME(A1:A10)",
-                        "points": 5
-                    },
-                    {
-                        "label": "=A1+A10",
-                        "points": 1
-                    },
-                    {
-                        "label": "=MOYENNE(A1:A10)",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Très bien ! SOMME est la fonction adaptée.",
-                "feedback_partial": "On se rapproche ! La formule la plus efficace ici est =SOMME(A1:A10).",
-                "feedback_incorrect": "Petit rappel : pour additionner une plage, utilisez plutôt =SOMME(A1:A10).",
-                "relevance": "Les fonctions de base (SOMME, MOYENNE…) ouvrent la porte aux calculs plus avancés."
-            },
-            {
-                "id": "Q12",
-                "theme": "Logique des formules",
-                "question": "Que renvoie la fonction =AUJOURDHUI() ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "La date du jour",
-                        "points": 5
-                    },
-                    {
-                        "label": "Le mot « AUJOURDHUI »",
-                        "points": 0
-                    },
-                    {
-                        "label": "Rien",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact ! La date se met à jour automatiquement.",
-                "feedback_partial": "Ici, la fonction renvoie la date du jour et se met à jour toute seule.",
-                "feedback_incorrect": "=AUJOURDHUI() renvoie la date actuelle (pas du texte).",
-                "relevance": "Les fonctions automatiques rendent vos fichiers dynamiques et toujours à jour."
-            },
-            {
-                "id": "Q13",
-                "theme": "Logique des formules",
-                "question": "Si vous copiez la formule =A1+1 de B1 vers B2, que devient-elle ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "=A2+1",
-                        "points": 5
-                    },
-                    {
-                        "label": "=A1+1",
-                        "points": 1
-                    },
-                    {
-                        "label": "=B1+1",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Parfait ! Vous maîtrisez les références relatives.",
-                "feedback_partial": "Bien vu. Avec la copie, la référence s’ajuste généralement à la ligne : =A2+1.",
-                "feedback_incorrect": "Astuce : les références s’adaptent lors de la recopie (ici, =A2+1).",
-                "relevance": "Comprendre références relatives\/absolues rend vos formules réutilisables et robustes."
-            },
-            {
-                "id": "Q14",
-                "theme": "Logique des formules",
-                "question": "Quelles formules permettent de calculer une moyenne de A1 à A10 ? (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "=MOYENNE(A1:A10)",
-                        "points": 3
-                    },
-                    {
-                        "label": "=SOMME(A1:A10)\/10",
-                        "points": 2
-                    },
-                    {
-                        "label": "=MAX(A1:A10)",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact ! Vous connaissez les deux méthodes valides pour la moyenne.",
-                "feedback_partial": "Bien vu. Il existe deux méthodes correctes : MOYENNE ou SOMME\/nb d’éléments.",
-                "feedback_incorrect": "La moyenne se calcule avec =MOYENNE(A1:A10) ou SOMME\/nb d’éléments (pas MAX).",
-                "relevance": "Savoir qu’il y a plusieurs chemins corrects rend vos calculs plus flexibles."
-            },
-            {
-                "id": "Q15",
-                "theme": "Logique des formules",
-                "question": "Quelles formules permettent de vérifier si une cellule est vide ? (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "=SI(A1=\"\";\"Vide\";\"Rempli\")",
-                        "points": 2
-                    },
-                    {
-                        "label": "=ESTVIDE(A1)",
-                        "points": 3
-                    },
-                    {
-                        "label": "=NB(A1)",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Très bien ! Deux approches utiles selon le besoin.",
-                "feedback_partial": "Bien joué. On peut tester le vide avec une condition ou avec ESTVIDE.",
-                "feedback_incorrect": "Astuce : utilisez =ESTVIDE(A1) ou une condition =SI(A1=\"\";…).",
-                "relevance": "Les tests logiques permettent d’automatiser des contrôles simples et fiables."
-            },
-            {
-                "id": "Q16",
-                "theme": "Logique des formules",
-                "question": "À quoi sert la fonction RECHERCHEV ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Rechercher une valeur dans une colonne et renvoyer une donnée associée",
-                        "points": 5
-                    },
-                    {
-                        "label": "Trier des données par ordre alphabétique",
-                        "points": 0
-                    },
-                    {
-                        "label": "Trouver la plus grande valeur",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact, c’est un pilier de la recherche d’informations.",
-                "feedback_partial": "RECHERCHEV sert à retrouver des informations liées à une valeur recherchée.",
-                "feedback_incorrect": "RECHERCHEV ne trie pas et ne cherche pas le maximum : elle ramène une info associée.",
-                "relevance": "La recherche\/jonction de données est au cœur de nombreuses analyses."
-            },
-            {
-                "id": "Q17",
-                "theme": "Culture & analyse",
-                "question": "Quel outil utiliser pour obtenir rapidement une synthèse d’un grand tableau ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Tableau croisé dynamique",
-                        "points": 5
-                    },
-                    {
-                        "label": "Trier les données",
-                        "points": 1
-                    },
-                    {
-                        "label": "Filtrer les données",
-                        "points": 2
-                    }
-                ],
-                "feedback_correct": "Parfait ! Le TCD est l’outil dédié à la synthèse rapide.",
-                "feedback_partial": "Bon réflexe. Pour une synthèse complète, pensez aussi au tableau croisé dynamique.",
-                "feedback_incorrect": "Le TCD est l’outil le plus adapté pour synthétiser un grand tableau.",
-                "relevance": "Identifier l’outil clé pour résumer une base de données est un excellent signe."
-            },
-            {
-                "id": "Q18",
-                "theme": "Culture & analyse",
-                "question": "Meilleure façon de représenter visuellement une évolution sur 12 mois ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Graphique en courbes",
+                        "label": "Dans la barre de formule (au-dessus de la grille)",
                         "points": 4
                     },
                     {
-                        "label": "Graphique en secteurs",
+                        "label": "Directement dans la cellule (elle affiche surtout le résultat)",
                         "points": 1
                     },
                     {
-                        "label": "Histogramme horizontal",
-                        "points": 2
-                    }
-                ],
-                "feedback_correct": "Exact. La courbe montre au mieux l’évolution dans le temps.",
-                "feedback_partial": "Pas mal. La courbe reste toutefois la plus lisible pour une série temporelle.",
-                "feedback_incorrect": "Pour visualiser une évolution, la courbe est généralement la plus adaptée.",
-                "relevance": "Choisir le bon graphique aide à raconter clairement l’histoire de vos données."
-            },
-            {
-                "id": "Q19",
-                "theme": "Culture & analyse",
-                "question": "À quoi sert le tri croissant dans Excel ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Ranger du plus petit au plus grand",
-                        "points": 3
-                    },
-                    {
-                        "label": "Trouver la valeur la plus grande",
-                        "points": 1
-                    },
-                    {
-                        "label": "Supprimer les doublons",
+                        "label": "Dans la barre d’état (en bas)",
                         "points": 0
                     }
                 ],
-                "feedback_correct": "Exact, c’est la définition du tri croissant.",
-                "feedback_partial": "Le tri croissant organise la liste. Pour trouver un maximum, d’autres outils peuvent être plus directs.",
-                "feedback_incorrect": "Le tri croissant ordonne les données du plus petit au plus grand.",
-                "relevance": "Trier, filtrer et nettoyer sont des réflexes essentiels pour analyser."
+                "feedback_correct": "Parfait : la barre de formule montre toujours la formule complète.",
+                "feedback_partial": "La cellule affiche surtout le résultat ; la formule est dans la barre de formule.",
+                "feedback_incorrect": "Regarde la barre de formule, juste au-dessus de la grille.",
+                "relevance": "Distinguer « formule » et « résultat affiché » rassure beaucoup au début."
             },
             {
-                "id": "Q20",
-                "theme": "Culture & analyse",
-                "question": "Vous recevez un fichier de 5 000 lignes : que faites-vous pour l’analyser efficacement ? (plusieurs réponses possibles)",
+                "id": "B04",
+                "theme": "Démarrage & interface",
+                "question": "Déplacer la sélection d’une cellule vers la droite : (plusieurs réponses possibles)",
                 "selectionType": "multi",
                 "options": [
                     {
-                        "label": "Utiliser filtres et tri",
+                        "label": "Touche Tab",
                         "points": 2
                     },
                     {
-                        "label": "Créer un tableau croisé dynamique",
+                        "label": "Flèche droite →",
+                        "points": 2
+                    },
+                    {
+                        "label": "Entrée (Enter)",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Oui : Tab et la flèche → permettent d’aller à droite.",
+                "feedback_partial": "Bien joué. Tab et la flèche → vont à droite ; Enter va vers le bas.",
+                "feedback_incorrect": "Astuce : Tab ou la flèche → déplacent la sélection à droite.",
+                "relevance": "Aide à se déplacer avec confiance sans la souris."
+            },
+            {
+                "id": "B05",
+                "theme": "Démarrage & interface",
+                "question": "Sélectionner toute la feuille rapidement : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Cliquer le petit triangle en haut à gauche de la grille",
                         "points": 3
                     },
                     {
-                        "label": "Parcourir ligne par ligne à la main",
+                        "label": "Ctrl+A (une ou deux fois selon le contexte)",
+                        "points": 2
+                    },
+                    {
+                        "label": "Double-cliquer une cellule",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Parfait : le coin supérieur gauche ou Ctrl+A sélectionnent tout.",
+                "feedback_partial": "Bien vu. Pense aussi au petit triangle en haut à gauche.",
+                "feedback_incorrect": "Essaie le triangle en haut à gauche ou le raccourci Ctrl+A.",
+                "relevance": "Pratique pour appliquer un format ou copier une feuille entière."
+            },
+            {
+                "id": "B06",
+                "theme": "Saisie & types",
+                "question": "Conserver le zéro initial (ex. 0123) : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Appliquer le format Texte à la cellule",
+                        "points": 2
+                    },
+                    {
+                        "label": "Commencer par une apostrophe : '0123",
+                        "points": 2
+                    },
+                    {
+                        "label": "Utiliser un format personnalisé 0000",
+                        "points": 2
+                    },
+                    {
+                        "label": "Taper 0123 sans rien faire",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Très bien : Texte, apostrophe ou format 0000 conservent le zéro.",
+                "feedback_partial": "On y est ! Les formats ou l’apostrophe aident à garder les zéros en tête.",
+                "feedback_incorrect": "Par défaut, Excel supprime le zéro. Utilise le format Texte, l’apostrophe, ou un format 0000.",
+                "relevance": "Évite les surprises avec des codes, numéros d’élève, etc."
+            },
+            {
+                "id": "B07",
+                "theme": "Saisie & types",
+                "question": "Saisir 15\/03\/2025 dans une cellule, c’est généralement…",
+                "selectionType": "single",
+                "options": [
+                    {
+                        "label": "Reconnu comme une date",
+                        "points": 4
+                    },
+                    {
+                        "label": "Du texte",
                         "points": 0
                     },
                     {
-                        "label": "Utiliser des graphiques",
-                        "points": 2
+                        "label": "Un nombre (représentation interne des dates)",
+                        "points": 1
                     }
                 ],
-                "feedback_correct": "Très bon réflexe ! Filtres\/tri, TCD et graphiques transforment un gros tableau en informations claires.",
-                "feedback_partial": "Bien vu. Combinez filtres\/tri, TCD et graphiques pour aller plus vite et plus loin.",
-                "feedback_incorrect": "Lire ligne par ligne est chronophage. Les filtres, TCD et graphiques font gagner un temps précieux.",
-                "relevance": "Avec les bons outils d’exploration et de synthèse, on structure rapidement une grande base."
+                "feedback_correct": "Oui : Excel reconnaît la date et applique un format date.",
+                "feedback_partial": "Techniquement une date est stockée comme un nombre, mais affichée comme date.",
+                "feedback_incorrect": "Excel reconnaît souvent ce format comme une date.",
+                "relevance": "Rassure sur le comportement des dates et du format d’affichage."
+            },
+            {
+                "id": "B08",
+                "theme": "Saisie & types",
+                "question": "Obtenir 15% dans la cellule : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Saisir 15%",
+                        "points": 2
+                    },
+                    {
+                        "label": "Saisir 0,15 puis appliquer le format %",
+                        "points": 2
+                    },
+                    {
+                        "label": "Saisir 15 puis appliquer le format % (donnera 1500%)",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Parfait : deux méthodes valides pour 15%.",
+                "feedback_partial": "Bien vu. 15% direct ou 0,15 avec le format %, ça marche.",
+                "feedback_incorrect": "Pense à saisir 15% ou 0,15 puis format % (et non 15 → 1500%).",
+                "relevance": "Relie la valeur saisie au format affiché (pour éviter les surprises)."
+            },
+            {
+                "id": "B09",
+                "theme": "Saisie & types",
+                "question": "Additionner les cellules A1 et B1 : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "=A1+B1",
+                        "points": 3
+                    },
+                    {
+                        "label": "=SOMME(A1;B1)",
+                        "points": 2
+                    },
+                    {
+                        "label": "=A1B1",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Exact : =A1+B1 ou =SOMME(A1;B1) donnent une addition correcte.",
+                "feedback_partial": "Bien. =A1+B1 est la forme la plus simple ; SOMME fonctionne aussi.",
+                "feedback_incorrect": "Pense à utiliser + ou la fonction SOMME.",
+                "relevance": "Installe le réflexe de base pour les calculs."
+            },
+            {
+                "id": "B10",
+                "theme": "Saisie & types",
+                "question": "Effacer le contenu d’une cellule sans supprimer la cellule : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Touche Suppr",
+                        "points": 2
+                    },
+                    {
+                        "label": "Clic droit > Effacer le contenu",
+                        "points": 2
+                    },
+                    {
+                        "label": "Accueil > Effacer > Effacer le contenu",
+                        "points": 2
+                    },
+                    {
+                        "label": "Supprimer la ligne entière",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Parfait : ces actions vident la cellule sans casser le tableau.",
+                "feedback_partial": "Bien joué. Efface le contenu plutôt que de supprimer la ligne.",
+                "feedback_incorrect": "Utilise « Effacer le contenu » ou la touche Suppr pour vider seulement la cellule.",
+                "relevance": "Évite de décaler tout le tableau par erreur."
+            },
+            {
+                "id": "B11",
+                "theme": "Mise en forme & affichage",
+                "question": "Ajuster la largeur d’une colonne : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Double-cliquer la bordure droite de l’en-tête",
+                        "points": 2
+                    },
+                    {
+                        "label": "Faire glisser la bordure droite de l’en-tête",
+                        "points": 2
+                    },
+                    {
+                        "label": "Renvoyer à la ligne automatique",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Exact : double-clic ou glisser ajustent la largeur.",
+                "feedback_partial": "Bien vu. Le double-clic ajuste exactement à la plus grande entrée.",
+                "feedback_incorrect": "Pense à manipuler la bordure de l’en-tête de colonne.",
+                "relevance": "Améliore la lisibilité en un geste simple."
+            },
+            {
+                "id": "B12",
+                "theme": "Mise en forme & affichage",
+                "question": "Afficher un texte long sur plusieurs lignes dans la même cellule : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Activer « Renvoyer à la ligne automatiquement »",
+                        "points": 2
+                    },
+                    {
+                        "label": "Saut de ligne manuel (Alt+Entrée)",
+                        "points": 2
+                    },
+                    {
+                        "label": "Fusionner et centrer",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Parfait : retour à la ligne auto ou Alt+Entrée selon le besoin.",
+                "feedback_partial": "Bien. « Fusionner et centrer » ne fait pas de retour à la ligne.",
+                "feedback_incorrect": "Utilise le renvoi à la ligne ou Alt+Entrée pour aérer le texte.",
+                "relevance": "Distingue la mise en forme du texte de la fusion de cellules (à éviter)."
+            },
+            {
+                "id": "B13",
+                "theme": "Mise en forme & affichage",
+                "question": "Appliquer un format monétaire (€) proprement :",
+                "selectionType": "single",
+                "options": [
+                    {
+                        "label": "Accueil > Nombre > choisir le symbole €",
+                        "points": 4
+                    },
+                    {
+                        "label": "Taper le symbole € manuellement dans la cellule",
+                        "points": 1
+                    },
+                    {
+                        "label": "Laisser le format Standard",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Oui, c’est le format numérique adapté (pas du texte).",
+                "feedback_partial": "Mieux vaut un vrai format € plutôt que du texte contenant « € ». ",
+                "feedback_incorrect": "Utilise un format monétaire pour des calculs fiables.",
+                "relevance": "Assure des calculs et des alignements cohérents."
+            },
+            {
+                "id": "B14",
+                "theme": "Mise en forme & affichage",
+                "question": "Centrer un texte dans sa cellule :",
+                "selectionType": "single",
+                "options": [
+                    {
+                        "label": "Accueil > Alignement > Centre",
+                        "points": 4
+                    },
+                    {
+                        "label": "Fusionner et centrer",
+                        "points": 1
+                    },
+                    {
+                        "label": "Accueil > Alignement > Aligné à gauche",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Exact : l’alignement « Centre » suffit, sans fusionner.",
+                "feedback_partial": "Ça recentre visuellement, mais la fusion crée des soucis plus tard.",
+                "feedback_incorrect": "Utilise le bouton d’alignement « Centre » pour un résultat propre.",
+                "relevance": "Encourage les bonnes pratiques d’alignement (sans fusion inutile)."
+            },
+            {
+                "id": "B15",
+                "theme": "Mise en forme & affichage",
+                "question": "Zoomer\/dézoomer rapidement : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Curseur de zoom (barre d’état, en bas à droite)",
+                        "points": 2
+                    },
+                    {
+                        "label": "Ctrl + molette de la souris",
+                        "points": 2
+                    },
+                    {
+                        "label": "Onglet Affichage > Zoom",
+                        "points": 1
+                    }
+                ],
+                "feedback_correct": "Parfait : curseur de zoom, Ctrl+molette, ou menu Affichage.",
+                "feedback_partial": "Bien. Essaie aussi le curseur de zoom en bas à droite.",
+                "feedback_incorrect": "Regarde le curseur en bas à droite ou Ctrl+molette.",
+                "relevance": "Ajuste le confort de lecture selon l’écran."
+            },
+            {
+                "id": "B16",
+                "theme": "Listes & filtres",
+                "question": "Activer des filtres sur un tableau : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Onglet Données > Filtrer",
+                        "points": 3
+                    },
+                    {
+                        "label": "Ctrl+Maj+L",
+                        "points": 2
+                    },
+                    {
+                        "label": "Onglet Insertion > Filtrer",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Exact : Données > Filtrer ou Ctrl+Maj+L ajoutent les filtres.",
+                "feedback_partial": "Bien ! Essaie aussi le raccourci Ctrl+Maj+L.",
+                "feedback_incorrect": "Va dans Données > Filtrer (ou Ctrl+Maj+L).",
+                "relevance": "Donne un réflexe simple pour explorer une liste."
+            },
+            {
+                "id": "B17",
+                "theme": "Impression",
+                "question": "Voir l’aperçu avant impression : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Fichier > Imprimer",
+                        "points": 2
+                    },
+                    {
+                        "label": "Ctrl+P (⌘+P sur Mac)",
+                        "points": 2
+                    },
+                    {
+                        "label": "Accueil > Police",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Parfait : Fichier > Imprimer ou Ctrl+P ouvrent l’aperçu.",
+                "feedback_partial": "Bien vu ! Pense aussi au raccourci Ctrl+P.",
+                "feedback_incorrect": "Passe par Fichier > Imprimer (ou Ctrl+P) pour l’aperçu.",
+                "relevance": "Permet de vérifier la mise en page avant d’imprimer."
+            },
+            {
+                "id": "B18",
+                "theme": "Fichiers",
+                "question": "Quelles affirmations sont exactes ? (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "« Enregistrer » met à jour le fichier actuel",
+                        "points": 2
+                    },
+                    {
+                        "label": "« Enregistrer sous » crée une copie (nouveau nom\/emplacement)",
+                        "points": 2
+                    },
+                    {
+                        "label": "« Enregistrer sous » supprime l’original",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Exact : « Enregistrer » met à jour, « Enregistrer sous » crée une copie.",
+                "feedback_partial": "Bien. Pense que « Enregistrer sous » ne supprime pas l’original.",
+                "feedback_incorrect": "Astuce : Enregistrer met à jour ; Enregistrer sous crée une nouvelle copie.",
+                "relevance": "Donne confiance pour gérer les versions d’un fichier."
+            },
+            {
+                "id": "B19",
+                "theme": "Fichiers",
+                "question": "Fermer le classeur sans quitter Excel : (plusieurs réponses possibles)",
+                "selectionType": "multi",
+                "options": [
+                    {
+                        "label": "Fichier > Fermer",
+                        "points": 2
+                    },
+                    {
+                        "label": "Ctrl+W (⌘+W sur Mac)",
+                        "points": 2
+                    },
+                    {
+                        "label": "Alt+F4 (ferme tout le programme)",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Parfait : Fichier > Fermer ou Ctrl+W ferment le classeur seulement.",
+                "feedback_partial": "Oui. Alt+F4 ferme tout le programme, pas uniquement le fichier.",
+                "feedback_incorrect": "Essaie Fichier > Fermer ou le raccourci Ctrl+W.",
+                "relevance": "Évite de quitter Excel par erreur en pleine séance."
+            },
+            {
+                "id": "B20",
+                "theme": "Repères & adresses",
+                "question": "Comment s’écrit l’adresse de la cellule colonne C, ligne 5 ?",
+                "selectionType": "single",
+                "options": [
+                    {
+                        "label": "C5",
+                        "points": 4
+                    },
+                    {
+                        "label": "5C",
+                        "points": 0
+                    },
+                    {
+                        "label": "C-5",
+                        "points": 0
+                    }
+                ],
+                "feedback_correct": "Exact : lettre de colonne puis numéro de ligne.",
+                "feedback_partial": "Pense « colonne (lettre) » puis « ligne (numéro) ».",
+                "feedback_incorrect": "Astuce : d’abord la lettre de colonne, puis le numéro de ligne (C5).",
+                "relevance": "Asseoit le repère de base pour lire\/écrire des formules."
             }
         ]
     },
@@ -1550,545 +1542,6 @@
                 "feedback_partial": "C’est la bonne posture pour progresser vite.",
                 "feedback_incorrect": "Relancer aide à obtenir mieux, pas à pas.",
                 "relevance": "Favorise une pratique décomplexée et efficace."
-            }
-        ]
-    },
-    {
-        "source_file": "ia_intermediaire.html",
-        "title": "ia_intermediaire",
-        "questions": [
-            {
-                "id": "INT01",
-                "theme": "Structuration",
-                "question": "Pour obtenir un JSON bien formé, que préciser dans le prompt ? (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "« Réponds uniquement avec un JSON, sans texte autour »",
-                        "points": 2
-                    },
-                    {
-                        "label": "Un petit exemple (schéma) du JSON attendu",
-                        "points": 2
-                    },
-                    {
-                        "label": "Le nom et le type des champs (string, number, etc.)",
-                        "points": 2
-                    },
-                    {
-                        "label": "Rien : l’IA devinera toujours",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Excellent : format explicite + exemple + types rendent les sorties fiables.",
-                "feedback_partial": "Bien ! Soyez explicite (format + exemple) pour limiter les erreurs.",
-                "feedback_incorrect": "Spécifiez format, exemple et types pour du JSON vraiment exploitable.",
-                "relevance": "Pose les bases d’un rendu structuré et parseable."
-            },
-            {
-                "id": "INT02",
-                "theme": "Structuration",
-                "question": "Quel rendu est le plus « prêt à parser » en JSON ?",
-                "selectionType": "image",
-                "options": [
-                    {
-                        "label": "{\"titre\":\"Exemple\",\"tags\":[\"a\",\"b\"]}",
-                        "points": 4,
-                        "emoji": "🧩"
-                    },
-                    {
-                        "label": "Voici un JSON : { ... } (avec explications avant\/après)",
-                        "points": 1,
-                        "emoji": "💬"
-                    },
-                    {
-                        "label": "Un paragraphe qui décrit ce que serait le JSON",
-                        "points": 0,
-                        "emoji": "📄"
-                    }
-                ],
-                "feedback_correct": "Parfait : un JSON pur, sans prose autour, est le plus simple à parser.",
-                "feedback_partial": "Un texte autour peut gêner le parsing. Privilégiez la sortie JSON seule.",
-                "feedback_incorrect": "Décrivez moins, demandez un JSON directement.",
-                "relevance": "Réduit la friction lors du parse côté code."
-            },
-            {
-                "id": "INT03",
-                "theme": "Structuration",
-                "question": "Si l’IA renvoie parfois un JSON invalide, que faire ? (sélection multiple)",
-                "selectionType": "multiselect",
-                "options": [
-                    {
-                        "label": "Valider\/Parser côté client et demander une correction en cas d’erreur",
-                        "points": 2
-                    },
-                    {
-                        "label": "Rappeler « JSON strict uniquement » dans la consigne",
-                        "points": 2
-                    },
-                    {
-                        "label": "Fournir un schéma ou une regex de validation",
-                        "points": 2
-                    },
-                    {
-                        "label": "Abandonner la structuration",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Très bien : validation côté client + consigne stricte + schéma améliorent la robustesse.",
-                "feedback_partial": "Bien. Ajoutez validation côté client et consigne plus stricte.",
-                "feedback_incorrect": "Ne renoncez pas : combinez validation et consignes claires.",
-                "relevance": "Concilie fiabilité et ergonomie côté intégration."
-            },
-            {
-                "id": "INT04",
-                "theme": "Formats",
-                "question": "Pour un tableau Markdown à 3 colonnes (Nom | Rôle | Email), la meilleure consigne est…",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "« Donne un tableau Markdown avec en-têtes Nom | Rôle | Email et 3 lignes d’exemple »",
-                        "points": 4
-                    },
-                    {
-                        "label": "« Fais un tableau »",
-                        "points": 1
-                    },
-                    {
-                        "label": "« Rends ça joli »",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact : objectif + format + en-têtes précis",
-                "feedback_partial": "Soyez plus explicite sur le format et les en-têtes.",
-                "feedback_incorrect": "Précisez le format et les colonnes attendues.",
-                "relevance": "Encourage les prompts concrets et reproductibles."
-            },
-            {
-                "id": "INT05",
-                "theme": "Formats",
-                "question": "Pour limiter les variations de formatting, que pouvez-vous demander ? (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "Un exemple de sortie exact à imiter",
-                        "points": 2
-                    },
-                    {
-                        "label": "Des délimiteurs clairs (ex. « Réponds uniquement entre { } »)",
-                        "points": 2
-                    },
-                    {
-                        "label": "« Au feeling »",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Oui : exemple précis + contraintes de délimitation stabilisent les sorties.",
-                "feedback_partial": "Ajoutez un exemple exact pour réduire les variations.",
-                "feedback_incorrect": "Soyez précis : exemple + délimiteurs > « au feeling ». ",
-                "relevance": "Réduit les écarts de format entre réponses."
-            },
-            {
-                "id": "INT06",
-                "theme": "Paramètres",
-                "question": "La « température » contrôle surtout…",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "La créativité\/variabilité des sorties",
-                        "points": 4
-                    },
-                    {
-                        "label": "La vitesse de votre connexion",
-                        "points": 0
-                    },
-                    {
-                        "label": "Le nombre maximal de tokens",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Oui : plus haut = plus varié\/creatif (souvent moins prévisible).",
-                "feedback_partial": "Retenez : cela influe la variabilité\/ créativité.",
-                "feedback_incorrect": "La température ne gère ni la vitesse ni la longueur max.",
-                "relevance": "Aide à choisir un réglage pertinent."
-            },
-            {
-                "id": "INT07",
-                "theme": "Paramètres",
-                "question": "« top_p » (nucléus sampling) sert à…",
-                "selectionType": "select",
-                "options": [
-                    {
-                        "label": "Limiter la masse de probabilité cumulée explorée",
-                        "points": 4
-                    },
-                    {
-                        "label": "Fixer la longueur max de sortie",
-                        "points": 0
-                    },
-                    {
-                        "label": "Télécharger plus de données d’entraînement",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact : on échantillonne dans un « noyau » de probabilité.",
-                "feedback_partial": "Idée : on borne la zone de probabilité explorée.",
-                "feedback_incorrect": "top_p ne gère pas la longueur ni l’entraînement.",
-                "relevance": "Nuance utile avec la température."
-            },
-            {
-                "id": "INT08",
-                "theme": "Paramètres",
-                "question": "« max_tokens » détermine principalement…",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "La taille maximale de la sortie",
-                        "points": 4
-                    },
-                    {
-                        "label": "La créativité",
-                        "points": 0
-                    },
-                    {
-                        "label": "La date de connaissance du modèle",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Oui : c’est la limite de longueur de la réponse.",
-                "feedback_partial": "Pensez « taille de sortie ».",
-                "feedback_incorrect": "Ce n’est pas la créativité ni la fraîcheur des infos.",
-                "relevance": "Évite les coupures de réponses."
-            },
-            {
-                "id": "INT09",
-                "theme": "Paramètres",
-                "question": "À quel point êtes-vous à l’aise pour ajuster température \/ top_p \/ max_tokens ?",
-                "selectionType": "range",
-                "range": {
-                    "min": 0,
-                    "max": 10,
-                    "step": 1,
-                    "bands": [
-                        {
-                            "min": 0,
-                            "max": 3,
-                            "points": 1
-                        },
-                        {
-                            "min": 4,
-                            "max": 7,
-                            "points": 2
-                        },
-                        {
-                            "min": 8,
-                            "max": 10,
-                            "points": 3
-                        }
-                    ]
-                },
-                "options": [],
-                "feedback_correct": "Super ! Vous pourrez affiner rapidement selon les cas.",
-                "feedback_partial": "Parfait pour expérimenter sereinement.",
-                "feedback_incorrect": "Pas grave : on proposera des réglages de départ.",
-                "relevance": "Mesure votre confort de pilotage fin."
-            },
-            {
-                "id": "INT10",
-                "theme": "Prompting avancé",
-                "question": "À propos du few-shot (exemples dans le prompt), que recommandez-vous ? (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "1–3 exemples courts et bien annotés",
-                        "points": 2
-                    },
-                    {
-                        "label": "Inclure des contre-exemples si utile",
-                        "points": 2
-                    },
-                    {
-                        "label": "Étiqueter clairement entrées\/sorties",
-                        "points": 2
-                    },
-                    {
-                        "label": "20 exemples très longs pour être sûr",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Parfait : peu d’exemples, courts, bien étiquetés (et parfois des contre-exemples).",
-                "feedback_partial": "Bien. Mieux vaut des exemples courts et clairs que trop longs.",
-                "feedback_incorrect": "Trop d’exemples longs peuvent dégrader le résultat.",
-                "relevance": "Stabilise le comportement du modèle."
-            },
-            {
-                "id": "INT11",
-                "theme": "Prompting avancé",
-                "question": "Ordonnez ces étapes pour itérer un prompt (glisser-déposer) :",
-                "selectionType": "ranking",
-                "options": [
-                    {
-                        "label": "Définir l’objectif"
-                    },
-                    {
-                        "label": "Ébaucher avec contraintes\/exemples"
-                    },
-                    {
-                        "label": "Tester sur 2–3 cas représentatifs"
-                    },
-                    {
-                        "label": "Analyser écarts & ajuster"
-                    }
-                ],
-                "ranking": {
-                    "correctOrder": [
-                        0,
-                        1,
-                        2,
-                        3
-                    ],
-                    "pointsPerItem": 1
-                },
-                "feedback_correct": "Top : objectif → ébauche → tests → ajustements.",
-                "feedback_partial": "Logique globale OK, peaufinez l’ordre exact.",
-                "feedback_incorrect": "Astuce : objectif, ébauche, tests, puis ajustements.",
-                "relevance": "Crée un cycle d’amélioration léger et efficace."
-            },
-            {
-                "id": "INT12",
-                "theme": "Prompting avancé",
-                "question": "Différence entre « message système » et « message utilisateur » :",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Système = règles\/ton globaux ; Utilisateur = consigne concrète",
-                        "points": 4
-                    },
-                    {
-                        "label": "Système = données ; Utilisateur = moteur d’IA",
-                        "points": 0
-                    },
-                    {
-                        "label": "Aucune différence",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact : le système cadre, l’utilisateur demande.",
-                "feedback_partial": "Le système = cadre\/ton ; l’utilisateur = demande ponctuelle.",
-                "feedback_incorrect": "Ils n’ont pas le même rôle.",
-                "relevance": "Aide à structurer des fils plus stables."
-            },
-            {
-                "id": "INT13",
-                "theme": "Prompting avancé",
-                "question": "Réduire les hallucinations : (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "Limiter la réponse au contexte fourni",
-                        "points": 2
-                    },
-                    {
-                        "label": "Demander d’indiquer « je ne sais pas » si incertain",
-                        "points": 2
-                    },
-                    {
-                        "label": "Exiger des sources ou références si c’est factuel",
-                        "points": 2
-                    },
-                    {
-                        "label": "Autoriser l’invention libre pour combler les trous",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Très bien : contraintes + incertitude assumée + sources quand c’est factuel.",
-                "feedback_partial": "Bien. Ajoutez une consigne claire sur l’incertitude\/sources.",
-                "feedback_incorrect": "Mieux vaut encadrer plutôt qu’inventer.",
-                "relevance": "Encourage des réponses fiables et circonscrites."
-            },
-            {
-                "id": "INT14",
-                "theme": "Prompting avancé",
-                "question": "Vous souhaitez éviter l’extraction de « chaînes de pensée » détaillées (raisonnements internes). Que demander à la place ?",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Un plan concis en étapes \/ justifications courtes",
-                        "points": 4
-                    },
-                    {
-                        "label": "Raconter tout le raisonnement interne détaillé",
-                        "points": 0
-                    },
-                    {
-                        "label": "Aucune demande sur le format",
-                        "points": 1
-                    }
-                ],
-                "feedback_correct": "Exact : préférez un plan\/étapes concis sans raisonnement interne.",
-                "feedback_partial": "Demandez explicitement un format en étapes courtes.",
-                "feedback_incorrect": "Évitez de solliciter des raisonnements internes détaillés.",
-                "relevance": "Bonnes pratiques d’explicabilité sans dévoiler l’interne."
-            },
-            {
-                "id": "INT15",
-                "theme": "RAG",
-                "question": "Le RAG (Retrieval-Augmented Generation), c’est…",
-                "selectionType": "select",
-                "options": [
-                    {
-                        "label": "Générer à partir de documents récupérés\/pertinents fournis au modèle",
-                        "points": 4
-                    },
-                    {
-                        "label": "Re-entraîner le modèle à chaque question",
-                        "points": 0
-                    },
-                    {
-                        "label": "Augmenter la température automatiquement",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Oui : on récupère des passages pertinents, puis on génère à partir d’eux.",
-                "feedback_partial": "Idée : la génération s’appuie sur des documents récupérés.",
-                "feedback_incorrect": "Le RAG n’est pas un ré-entraînement.",
-                "relevance": "Concept clé pour fiabiliser des réponses sur des contenus privés."
-            },
-            {
-                "id": "INT16",
-                "theme": "RAG",
-                "question": "Étapes utiles d’un mini-pipeline RAG (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "Indexer\/embeddings des documents",
-                        "points": 2
-                    },
-                    {
-                        "label": "Rechercher des passages pertinents",
-                        "points": 2
-                    },
-                    {
-                        "label": "Joindre le contexte au prompt",
-                        "points": 2
-                    },
-                    {
-                        "label": "Ignorer les sources et inventer",
-                        "points": 0
-                    },
-                    {
-                        "label": "Ré-entraîner le modèle pour chaque requête",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Parfait : indexer → rechercher → injecter le contexte.",
-                "feedback_partial": "Bien. Il faut injecter le contexte récupéré dans le prompt.",
-                "feedback_incorrect": "RAG ≠ ré-entraînement ; on exploite des passages pertinents.",
-                "relevance": "Structure un flux simple et efficace."
-            },
-            {
-                "id": "INT17",
-                "theme": "Appels de fonction",
-                "question": "« Function calling » (ou outils) sert surtout à…",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Structurer des arguments pour appeler une API\/outil externe",
-                        "points": 4
-                    },
-                    {
-                        "label": "Changer la personnalité du modèle",
-                        "points": 0
-                    },
-                    {
-                        "label": "Accélérer la carte graphique",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact : l’IA produit des paramètres qu’un outil exécute.",
-                "feedback_partial": "Il s’agit d’orchestrer des appels à des outils.",
-                "feedback_incorrect": "Rien à voir avec la personnalité ou le GPU.",
-                "relevance": "Clé pour automatiser des actions fiables."
-            },
-            {
-                "id": "INT18",
-                "theme": "Sécurité & prompts",
-                "question": "Face à une tentative de « prompt injection » dans un document, vous… (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "Donnez la priorité aux règles système plutôt qu’aux instructions du document",
-                        "points": 2
-                    },
-                    {
-                        "label": "Limitez les actions au périmètre prévu (whitelist)",
-                        "points": 2
-                    },
-                    {
-                        "label": "Copiez\/collez des clés secrètes pour satisfaire la demande",
-                        "points": 0
-                    },
-                    {
-                        "label": "Signalez ou filtrez le contenu suspect",
-                        "points": 2
-                    }
-                ],
-                "feedback_correct": "Très bien : respect des règles système, périmètre strict, signalement.",
-                "feedback_partial": "Bien. Appliquez un périmètre strict et ignorez les demandes hors cadre.",
-                "feedback_incorrect": "Ne suivez jamais des instructions malicieuses du contenu récupéré.",
-                "relevance": "Réduit les risques liés aux données injectées."
-            },
-            {
-                "id": "INT19",
-                "theme": "Évaluation",
-                "question": "Pour juger une réponse d’IA (avec contexte), critères utiles : (plusieurs réponses possibles)",
-                "selectionType": "multi",
-                "options": [
-                    {
-                        "label": "Fidélité au contexte (pas d’invention)",
-                        "points": 2
-                    },
-                    {
-                        "label": "Complétude et clarté",
-                        "points": 2
-                    },
-                    {
-                        "label": "Traçabilité \/ références quand c’est factuel",
-                        "points": 2
-                    },
-                    {
-                        "label": "Longueur maximale en toutes circonstances",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Parfait : fidélité, clarté, complétude et traçabilité.",
-                "feedback_partial": "Bien. Ajoutez la traçabilité pour le factuel.",
-                "feedback_incorrect": "Préférez la qualité à la longueur.",
-                "relevance": "Concentre l’évaluation sur la valeur utile."
-            },
-            {
-                "id": "INT20",
-                "theme": "Debug & amélioration",
-                "question": "Quand un cas échoue, la meilleure prochaine étape est…",
-                "selectionType": "single",
-                "options": [
-                    {
-                        "label": "Créer un repro minimal (prompt+entrée), tester quelques variantes, ajuster",
-                        "points": 4
-                    },
-                    {
-                        "label": "Augmenter la température au hasard",
-                        "points": 1
-                    },
-                    {
-                        "label": "Blâmer l’IA et arrêter",
-                        "points": 0
-                    }
-                ],
-                "feedback_correct": "Exact : isolez le cas, testez, ajustez méthodiquement.",
-                "feedback_partial": "Testez des variantes plutôt qu’un réglage au hasard.",
-                "feedback_incorrect": "Une démarche structurée aide à corriger vite.",
-                "relevance": "Donne une méthode de progression concrète."
             }
         ]
     }

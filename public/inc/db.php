@@ -122,7 +122,13 @@ function populate_database_from_json_if_empty() {
 
     $json_path = __DIR__ . '/../data/quizzes.json';
     if (!file_exists($json_path)) {
-         throw new Exception("Le fichier de données 'quizzes.json' est introuvable. Veuillez d'abord exécuter le script 'scripts/build_quizzes_json.php'.");
+        // Si le fichier n'existe pas, on tente de le construire
+        echo "Fichier quizzes.json non trouvé. Tentative de construction...\n";
+        require_once __DIR__ . '/../scripts/build_quizzes_json.php';
+        build_json();
+        if (!file_exists($json_path)) {
+            throw new Exception("La construction du fichier quizzes.json a échoué.");
+        }
     }
 
     $json_content = file_get_contents($json_path);
@@ -142,7 +148,7 @@ function populate_database_from_json_if_empty() {
         );
 
         foreach ($quizzes_data as $quiz) {
-            if (!isset($quiz['questions']) || !is_array($quiz['questions'])) continue;
+            if (empty($quiz['questions']) || !is_array($quiz['questions'])) continue;
 
             $questions = $quiz['questions'];
             $title = $quiz['title'] ?? 'Titre inconnu';

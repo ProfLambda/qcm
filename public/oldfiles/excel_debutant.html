@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Test de positionnement - Excel débutant</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-100 text-gray-900">
+		<div class="max-w-3xl mx-auto p-4 md:p-6">
+			<header class="mb-6">
+				<h1 class="text-2xl md:text-3xl font-bold"
+					>Test de positionnement - Excel débutant</h1
+				>
+				<p class="text-sm text-gray-700 mt-1">
+					20 questions. Répondez, cliquez sur <strong>Valider</strong> pour
+					verrouiller votre réponse et voir le feedback, puis
+					<strong>Suivant</strong>.
+				</p>
+			</header>
+
+			<!-- Carte principale -->
+			<div class="bg-white rounded-2xl shadow p-5 md:p-6">
+				<!-- Progression -->
+				<div class="mb-4">
+					<div
+						class="flex items-center justify-between text-sm text-gray-600">
+						<span id="progress-label">Question 1 / 20</span>
+						<span id="score-label">Score : 0</span>
+					</div>
+					<div class="w-full bg-gray-200 h-2 rounded mt-2">
+						<div
+							id="progress-bar"
+							class="bg-emerald-500 h-2 rounded"
+							style="width: 5%"></div>
+					</div>
+				</div>
+
+				<!-- Thème -->
+				<div
+					id="theme"
+					class="text-xs uppercase tracking-wide text-gray-500 mb-2"></div>
+
+				<!-- Question -->
+				<h2
+					id="question"
+					class="text-lg md:text-xl font-semibold mb-2"></h2>
+				<div id="multi-help" class="hidden mb-3 text-xs text-gray-600"
+					>Plusieurs réponses peuvent être correctes. Cochez toutes les
+					bonnes réponses.</div
+				>
+
+				<!-- Options -->
+				<form id="options" class="space-y-2 mb-4"></form>
+
+				<!-- Feedback -->
+				<div id="feedback" class="hidden p-3 rounded-lg text-sm"></div>
+
+				<!-- Pertinence -->
+				<details id="relevance" class="hidden mt-2">
+					<summary class="cursor-pointer text-sm text-gray-700 font-medium"
+						>Pourquoi cette question est pertinente ?</summary
+					>
+					<div
+						class="mt-1 text-sm text-gray-600"
+						id="relevance-text"></div>
+				</details>
+
+				<!-- Contrôles -->
+				<div class="mt-6 flex flex-wrap gap-2">
+					<button
+						id="prev-btn"
+						class="px-4 py-2 rounded-xl border text-sm disabled:opacity-40"
+						type="button"
+						>Précédent</button
+					>
+					<button
+						id="validate-btn"
+						class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm"
+						type="button"
+						>Valider</button
+					>
+					<button
+						id="next-btn"
+						class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm disabled:opacity-40"
+						type="button"
+						disabled
+						>Suivant</button
+					>
+					<button
+						id="finish-btn"
+						class="ml-auto px-4 py-2 rounded-xl bg-gray-900 text-white text-sm hidden"
+						type="button"
+						>Voir l’avis final</button
+					>
+				</div>
+			</div>
+
+			<!-- Résultat final -->
+			<div
+				id="final"
+				class="hidden bg-white rounded-2xl shadow p-5 md:p-6 mt-6">
+				<h3 class="text-xl font-semibold mb-2">Avis final</h3>
+				<p id="final-summary" class="mb-4 text-gray-800"></p>
+				<ul
+					id="final-flags"
+					class="list-disc pl-6 text-sm text-gray-700 mb-4"></ul>
+				<div id="recos" class="p-4 rounded-xl"></div>
+
+				<details class="mt-6">
+					<summary class="cursor-pointer text-sm text-gray-700 font-medium"
+						>Voir le récap par question</summary
+					>
+					<div id="recap" class="mt-3 space-y-3"></div>
+				</details>
+
+				<div class="mt-6 flex gap-2">
+					<button
+						id="restart-btn"
+						class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm"
+						type="button"
+						>Recommencer</button
+					>
+					<button
+						id="export-btn"
+						class="px-4 py-2 rounded-xl border text-sm"
+						type="button"
+						>Exporter mes réponses (JSON)</button
+					>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			/** ==============================================================
+			 *  BANQUE DE QUESTIONS (POINTS + FEEDBACK PERSONNALISÉS)
+			 *  --------------------------------------------------------------
+			 *  Chaque option a "points" (>= 0). Aucun malus.
+			 *  - single : points = points de l’option choisie
+			 *  - multi  : points = somme des points des options cochées
+			 *  Feedback affiché selon le ratio (points / maxPoints) :
+			 *    - 1.00 → feedback_correct
+			 *    - 0.00 → feedback_incorrect
+			 *    - (0,1) → feedback_partial (si absent, message par défaut)
+			 *  ============================================================== */
+			const QUESTIONS = [
+				// Thème 1 — Démarrage & interface (5)
+				{
+					id: "B01",
+					theme: "Démarrage & interface",
+					question:
+						"Créer un nouveau classeur vierge : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Fichier > Nouveau > Classeur vierge", points: 3 },
+						{ label: "Ctrl+N (⌘+N sur Mac)", points: 2 },
+						{ label: "Insertion > Classeur", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : Fichier > Nouveau ou Ctrl+N créent un nouveau classeur.",
+					feedback_partial:
+						"Bien vu ! Pour aller plus vite, pense aussi au raccourci Ctrl+N.",
+					feedback_incorrect:
+						"Astuce : passe par Fichier > Nouveau (ou Ctrl+N) pour un classeur vierge.",
+					relevance:
+						"Valide la capacité à démarrer sur un carnet propre avant d’exercer.",
+				},
+				{
+					id: "B02",
+					theme: "Démarrage & interface",
+					question:
+						"Quelle est la différence entre un classeur et une feuille ?",
+					selectionType: "single",
+					options: [
+						{
+							label: "Un classeur contient une ou plusieurs feuilles",
+							points: 4,
+						},
+						{ label: "C'est la même chose", points: 0 },
+						{
+							label: "Une feuille contient plusieurs classeurs",
+							points: 0,
+						},
+					],
+					feedback_correct:
+						"Exact ! Le classeur est le fichier, la feuille est une page à l’intérieur.",
+					feedback_partial:
+						"Presque : le classeur est plus grand que la feuille.",
+					feedback_incorrect:
+						"Pas de souci : le classeur est le fichier qui contient des feuilles.",
+					relevance:
+						"Met en place le vocabulaire de base pour se repérer.",
+				},
+				{
+					id: "B03",
+					theme: "Démarrage & interface",
+					question:
+						"Où voit-on la formule complète de la cellule sélectionnée ?",
+					selectionType: "single",
+					options: [
+						{
+							label: "Dans la barre de formule (au-dessus de la grille)",
+							points: 4,
+						},
+						{
+							label: "Directement dans la cellule (elle affiche surtout le résultat)",
+							points: 1,
+						},
+						{ label: "Dans la barre d’état (en bas)", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : la barre de formule montre toujours la formule complète.",
+					feedback_partial:
+						"La cellule affiche surtout le résultat ; la formule est dans la barre de formule.",
+					feedback_incorrect:
+						"Regarde la barre de formule, juste au-dessus de la grille.",
+					relevance:
+						"Distinguer « formule » et « résultat affiché » rassure beaucoup au début.",
+				},
+				{
+					id: "B04",
+					theme: "Démarrage & interface",
+					question:
+						"Déplacer la sélection d’une cellule vers la droite : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Touche Tab", points: 2 },
+						{ label: "Flèche droite →", points: 2 },
+						{ label: "Entrée (Enter)", points: 0 },
+					],
+					feedback_correct:
+						"Oui : Tab et la flèche → permettent d’aller à droite.",
+					feedback_partial:
+						"Bien joué. Tab et la flèche → vont à droite ; Enter va vers le bas.",
+					feedback_incorrect:
+						"Astuce : Tab ou la flèche → déplacent la sélection à droite.",
+					relevance: "Aide à se déplacer avec confiance sans la souris.",
+				},
+				{
+					id: "B05",
+					theme: "Démarrage & interface",
+					question:
+						"Sélectionner toute la feuille rapidement : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Cliquer le petit triangle en haut à gauche de la grille",
+							points: 3,
+						},
+						{
+							label: "Ctrl+A (une ou deux fois selon le contexte)",
+							points: 2,
+						},
+						{ label: "Double-cliquer une cellule", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : le coin supérieur gauche ou Ctrl+A sélectionnent tout.",
+					feedback_partial:
+						"Bien vu. Pense aussi au petit triangle en haut à gauche.",
+					feedback_incorrect:
+						"Essaie le triangle en haut à gauche ou le raccourci Ctrl+A.",
+					relevance:
+						"Pratique pour appliquer un format ou copier une feuille entière.",
+				},
+
+				// Thème 2 — Saisie & types de données (5)
+				{
+					id: "B06",
+					theme: "Saisie & types",
+					question:
+						"Conserver le zéro initial (ex. 0123) : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Appliquer le format Texte à la cellule",
+							points: 2,
+						},
+						{ label: "Commencer par une apostrophe : '0123", points: 2 },
+						{ label: "Utiliser un format personnalisé 0000", points: 2 },
+						{ label: "Taper 0123 sans rien faire", points: 0 },
+					],
+					feedback_correct:
+						"Très bien : Texte, apostrophe ou format 0000 conservent le zéro.",
+					feedback_partial:
+						"On y est ! Les formats ou l’apostrophe aident à garder les zéros en tête.",
+					feedback_incorrect:
+						"Par défaut, Excel supprime le zéro. Utilise le format Texte, l’apostrophe, ou un format 0000.",
+					relevance:
+						"Évite les surprises avec des codes, numéros d’élève, etc.",
+				},
+				{
+					id: "B07",
+					theme: "Saisie & types",
+					question:
+						"Saisir 15/03/2025 dans une cellule, c’est généralement…",
+					selectionType: "single",
+					options: [
+						{ label: "Reconnu comme une date", points: 4 },
+						{ label: "Du texte", points: 0 },
+						{
+							label: "Un nombre (représentation interne des dates)",
+							points: 1,
+						},
+					],
+					feedback_correct:
+						"Oui : Excel reconnaît la date et applique un format date.",
+					feedback_partial:
+						"Techniquement une date est stockée comme un nombre, mais affichée comme date.",
+					feedback_incorrect:
+						"Excel reconnaît souvent ce format comme une date.",
+					relevance:
+						"Rassure sur le comportement des dates et du format d’affichage.",
+				},
+				{
+					id: "B08",
+					theme: "Saisie & types",
+					question:
+						"Obtenir 15% dans la cellule : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Saisir 15%", points: 2 },
+						{
+							label: "Saisir 0,15 puis appliquer le format %",
+							points: 2,
+						},
+						{
+							label: "Saisir 15 puis appliquer le format % (donnera 1500%)",
+							points: 0,
+						},
+					],
+					feedback_correct: "Parfait : deux méthodes valides pour 15%.",
+					feedback_partial:
+						"Bien vu. 15% direct ou 0,15 avec le format %, ça marche.",
+					feedback_incorrect:
+						"Pense à saisir 15% ou 0,15 puis format % (et non 15 → 1500%).",
+					relevance:
+						"Relie la valeur saisie au format affiché (pour éviter les surprises).",
+				},
+				{
+					id: "B09",
+					theme: "Saisie & types",
+					question:
+						"Additionner les cellules A1 et B1 : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "=A1+B1", points: 3 },
+						{ label: "=SOMME(A1;B1)", points: 2 },
+						{ label: "=A1B1", points: 0 },
+					],
+					feedback_correct:
+						"Exact : =A1+B1 ou =SOMME(A1;B1) donnent une addition correcte.",
+					feedback_partial:
+						"Bien. =A1+B1 est la forme la plus simple ; SOMME fonctionne aussi.",
+					feedback_incorrect: "Pense à utiliser + ou la fonction SOMME.",
+					relevance: "Installe le réflexe de base pour les calculs.",
+				},
+				{
+					id: "B10",
+					theme: "Saisie & types",
+					question:
+						"Effacer le contenu d’une cellule sans supprimer la cellule : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Touche Suppr", points: 2 },
+						{ label: "Clic droit > Effacer le contenu", points: 2 },
+						{
+							label: "Accueil > Effacer > Effacer le contenu",
+							points: 2,
+						},
+						{ label: "Supprimer la ligne entière", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : ces actions vident la cellule sans casser le tableau.",
+					feedback_partial:
+						"Bien joué. Efface le contenu plutôt que de supprimer la ligne.",
+					feedback_incorrect:
+						"Utilise « Effacer le contenu » ou la touche Suppr pour vider seulement la cellule.",
+					relevance: "Évite de décaler tout le tableau par erreur.",
+				},
+
+				// Thème 3 — Mise en forme & affichage (5)
+				{
+					id: "B11",
+					theme: "Mise en forme & affichage",
+					question:
+						"Ajuster la largeur d’une colonne : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Double-cliquer la bordure droite de l’en-tête",
+							points: 2,
+						},
+						{
+							label: "Faire glisser la bordure droite de l’en-tête",
+							points: 2,
+						},
+						{ label: "Renvoyer à la ligne automatique", points: 0 },
+					],
+					feedback_correct:
+						"Exact : double-clic ou glisser ajustent la largeur.",
+					feedback_partial:
+						"Bien vu. Le double-clic ajuste exactement à la plus grande entrée.",
+					feedback_incorrect:
+						"Pense à manipuler la bordure de l’en-tête de colonne.",
+					relevance: "Améliore la lisibilité en un geste simple.",
+				},
+				{
+					id: "B12",
+					theme: "Mise en forme & affichage",
+					question:
+						"Afficher un texte long sur plusieurs lignes dans la même cellule : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Activer « Renvoyer à la ligne automatiquement »",
+							points: 2,
+						},
+						{ label: "Saut de ligne manuel (Alt+Entrée)", points: 2 },
+						{ label: "Fusionner et centrer", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : retour à la ligne auto ou Alt+Entrée selon le besoin.",
+					feedback_partial:
+						"Bien. « Fusionner et centrer » ne fait pas de retour à la ligne.",
+					feedback_incorrect:
+						"Utilise le renvoi à la ligne ou Alt+Entrée pour aérer le texte.",
+					relevance:
+						"Distingue la mise en forme du texte de la fusion de cellules (à éviter).",
+				},
+				{
+					id: "B13",
+					theme: "Mise en forme & affichage",
+					question: "Appliquer un format monétaire (€) proprement :",
+					selectionType: "single",
+					options: [
+						{
+							label: "Accueil > Nombre > choisir le symbole €",
+							points: 4,
+						},
+						{
+							label: "Taper le symbole € manuellement dans la cellule",
+							points: 1,
+						},
+						{ label: "Laisser le format Standard", points: 0 },
+					],
+					feedback_correct:
+						"Oui, c’est le format numérique adapté (pas du texte).",
+					feedback_partial:
+						"Mieux vaut un vrai format € plutôt que du texte contenant « € ». ",
+					feedback_incorrect:
+						"Utilise un format monétaire pour des calculs fiables.",
+					relevance: "Assure des calculs et des alignements cohérents.",
+				},
+				{
+					id: "B14",
+					theme: "Mise en forme & affichage",
+					question: "Centrer un texte dans sa cellule :",
+					selectionType: "single",
+					options: [
+						{ label: "Accueil > Alignement > Centre", points: 4 },
+						{ label: "Fusionner et centrer", points: 1 },
+						{
+							label: "Accueil > Alignement > Aligné à gauche",
+							points: 0,
+						},
+					],
+					feedback_correct:
+						"Exact : l’alignement « Centre » suffit, sans fusionner.",
+					feedback_partial:
+						"Ça recentre visuellement, mais la fusion crée des soucis plus tard.",
+					feedback_incorrect:
+						"Utilise le bouton d’alignement « Centre » pour un résultat propre.",
+					relevance:
+						"Encourage les bonnes pratiques d’alignement (sans fusion inutile).",
+				},
+				{
+					id: "B15",
+					theme: "Mise en forme & affichage",
+					question:
+						"Zoomer/dézoomer rapidement : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Curseur de zoom (barre d’état, en bas à droite)",
+							points: 2,
+						},
+						{ label: "Ctrl + molette de la souris", points: 2 },
+						{ label: "Onglet Affichage > Zoom", points: 1 },
+					],
+					feedback_correct:
+						"Parfait : curseur de zoom, Ctrl+molette, ou menu Affichage.",
+					feedback_partial:
+						"Bien. Essaie aussi le curseur de zoom en bas à droite.",
+					feedback_incorrect:
+						"Regarde le curseur en bas à droite ou Ctrl+molette.",
+					relevance: "Ajuste le confort de lecture selon l’écran.",
+				},
+
+				// Thème 4 — Listes, impression & fichiers (5)
+				{
+					id: "B16",
+					theme: "Listes & filtres",
+					question:
+						"Activer des filtres sur un tableau : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Onglet Données > Filtrer", points: 3 },
+						{ label: "Ctrl+Maj+L", points: 2 },
+						{ label: "Onglet Insertion > Filtrer", points: 0 },
+					],
+					feedback_correct:
+						"Exact : Données > Filtrer ou Ctrl+Maj+L ajoutent les filtres.",
+					feedback_partial: "Bien ! Essaie aussi le raccourci Ctrl+Maj+L.",
+					feedback_incorrect: "Va dans Données > Filtrer (ou Ctrl+Maj+L).",
+					relevance: "Donne un réflexe simple pour explorer une liste.",
+				},
+				{
+					id: "B17",
+					theme: "Impression",
+					question:
+						"Voir l’aperçu avant impression : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Fichier > Imprimer", points: 2 },
+						{ label: "Ctrl+P (⌘+P sur Mac)", points: 2 },
+						{ label: "Accueil > Police", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : Fichier > Imprimer ou Ctrl+P ouvrent l’aperçu.",
+					feedback_partial: "Bien vu ! Pense aussi au raccourci Ctrl+P.",
+					feedback_incorrect:
+						"Passe par Fichier > Imprimer (ou Ctrl+P) pour l’aperçu.",
+					relevance:
+						"Permet de vérifier la mise en page avant d’imprimer.",
+				},
+				{
+					id: "B18",
+					theme: "Fichiers",
+					question:
+						"Quelles affirmations sont exactes ? (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "« Enregistrer » met à jour le fichier actuel",
+							points: 2,
+						},
+						{
+							label: "« Enregistrer sous » crée une copie (nouveau nom/emplacement)",
+							points: 2,
+						},
+						{
+							label: "« Enregistrer sous » supprime l’original",
+							points: 0,
+						},
+					],
+					feedback_correct:
+						"Exact : « Enregistrer » met à jour, « Enregistrer sous » crée une copie.",
+					feedback_partial:
+						"Bien. Pense que « Enregistrer sous » ne supprime pas l’original.",
+					feedback_incorrect:
+						"Astuce : Enregistrer met à jour ; Enregistrer sous crée une nouvelle copie.",
+					relevance:
+						"Donne confiance pour gérer les versions d’un fichier.",
+				},
+				{
+					id: "B19",
+					theme: "Fichiers",
+					question:
+						"Fermer le classeur sans quitter Excel : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Fichier > Fermer", points: 2 },
+						{ label: "Ctrl+W (⌘+W sur Mac)", points: 2 },
+						{ label: "Alt+F4 (ferme tout le programme)", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : Fichier > Fermer ou Ctrl+W ferment le classeur seulement.",
+					feedback_partial:
+						"Oui. Alt+F4 ferme tout le programme, pas uniquement le fichier.",
+					feedback_incorrect:
+						"Essaie Fichier > Fermer ou le raccourci Ctrl+W.",
+					relevance: "Évite de quitter Excel par erreur en pleine séance.",
+				},
+				{
+					id: "B20",
+					theme: "Repères & adresses",
+					question:
+						"Comment s’écrit l’adresse de la cellule colonne C, ligne 5 ?",
+					selectionType: "single",
+					options: [
+						{ label: "C5", points: 4 },
+						{ label: "5C", points: 0 },
+						{ label: "C-5", points: 0 },
+					],
+					feedback_correct:
+						"Exact : lettre de colonne puis numéro de ligne.",
+					feedback_partial:
+						"Pense « colonne (lettre) » puis « ligne (numéro) ».",
+					feedback_incorrect:
+						"Astuce : d’abord la lettre de colonne, puis le numéro de ligne (C5).",
+					relevance:
+						"Asseoit le repère de base pour lire/écrire des formules.",
+				},
+			];
+
+			/* ==============================================================
+   LOGIQUE / ETAT
+   ============================================================== */
+			const state = {
+				index: 0,
+				validated: Array(QUESTIONS.length).fill(false),
+				answers: Array(QUESTIONS.length).fill(null), // single: number|null ; multi: number[]|null
+				pointsEarned: Array(QUESTIONS.length).fill(0),
+				score: 0,
+			};
+
+			const els = {
+				progressLabel: document.getElementById("progress-label"),
+				scoreLabel: document.getElementById("score-label"),
+				progressBar: document.getElementById("progress-bar"),
+				theme: document.getElementById("theme"),
+				question: document.getElementById("question"),
+				multiHelp: document.getElementById("multi-help"),
+				options: document.getElementById("options"),
+				feedback: document.getElementById("feedback"),
+				relevanceBox: document.getElementById("relevance"),
+				relevanceText: document.getElementById("relevance-text"),
+				prevBtn: document.getElementById("prev-btn"),
+				validateBtn: document.getElementById("validate-btn"),
+				nextBtn: document.getElementById("next-btn"),
+				finishBtn: document.getElementById("finish-btn"),
+				final: document.getElementById("final"),
+				finalSummary: document.getElementById("final-summary"),
+				finalFlags: document.getElementById("final-flags"),
+				recos: document.getElementById("recos"),
+				recap: document.getElementById("recap"),
+				restartBtn: document.getElementById("restart-btn"),
+				exportBtn: document.getElementById("export-btn"),
+			};
+
+			function setInputsDisabled(disabled) {
+				[...els.options.querySelectorAll("input")].forEach(
+					(inp) => (inp.disabled = disabled)
+				);
+				[...els.options.querySelectorAll("label")].forEach((lab) => {
+					lab.classList.toggle("opacity-60", disabled);
+					lab.classList.toggle("cursor-not-allowed", disabled);
+				});
+			}
+
+			function maxPointsForQuestion(q) {
+				if (q.selectionType === "single") {
+					return Math.max(...q.options.map((o) => o.points));
+				}
+				// multi: somme des points positifs (les réponses pertinentes)
+				return q.options.reduce((sum, o) => sum + Math.max(0, o.points), 0);
+			}
+
+			const TOTAL_MAX = QUESTIONS.reduce(
+				(acc, q) => acc + maxPointsForQuestion(q),
+				0
+			);
+
+			function renderQuestion() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+
+				els.progressLabel.textContent = `Question ${i + 1} / ${
+					QUESTIONS.length
+				}`;
+				const pct = Math.max(5, Math.round((i / QUESTIONS.length) * 100));
+				els.progressBar.style.width = `${pct}%`;
+
+				els.theme.textContent = q.theme;
+				els.question.innerHTML = q.question;
+
+				// Aide multi
+				els.multiHelp.classList.toggle(
+					"hidden",
+					q.selectionType !== "multi"
+				);
+
+				// Options
+				els.options.innerHTML = "";
+				if (q.selectionType === "single") {
+					q.options.forEach((opt, idx) => {
+						const id = `q${i}_opt${idx}`;
+						const checked = state.answers[i] === idx ? "checked" : "";
+						els.options.insertAdjacentHTML(
+							"beforeend",
+							`
+        <label for="${id}" class="flex items-start gap-3 p-3 border rounded-xl hover:bg-gray-50 cursor-pointer">
+          <input ${checked} id="${id}" name="q${i}" type="radio" value="${idx}" class="mt-1" />
+          <span>${opt.label}</span>
+        </label>
+      `
+						);
+					});
+				} else {
+					const saved = Array.isArray(state.answers[i])
+						? state.answers[i]
+						: [];
+					q.options.forEach((opt, idx) => {
+						const id = `q${i}_opt${idx}`;
+						const checked = saved.includes(idx) ? "checked" : "";
+						els.options.insertAdjacentHTML(
+							"beforeend",
+							`
+        <label for="${id}" class="flex items-start gap-3 p-3 border rounded-xl hover:bg-gray-50 cursor-pointer">
+          <input ${checked} id="${id}" name="q${i}" type="checkbox" value="${idx}" class="mt-1" />
+          <span>${opt.label}</span>
+        </label>
+      `
+						);
+					});
+				}
+
+				// Reset feedback
+				els.feedback.classList.add("hidden");
+				els.feedback.classList.remove(
+					"bg-green-50",
+					"text-green-800",
+					"bg-amber-50",
+					"text-amber-800",
+					"bg-red-50",
+					"text-red-800"
+				);
+				els.feedback.innerHTML = "";
+				els.relevanceBox.classList.add("hidden");
+				els.relevanceText.textContent = "";
+
+				// Boutons / états
+				const isValidated = state.validated[i];
+				els.prevBtn.disabled = i === 0;
+
+				// "Valider" disparaît si déjà validée
+				els.validateBtn.classList.toggle("hidden", isValidated);
+
+				// "Suivant" / "Voir l’avis final"
+				const isLast = i === QUESTIONS.length - 1;
+				els.nextBtn.classList.toggle("hidden", isLast);
+				els.nextBtn.disabled = !isValidated;
+				els.finishBtn.classList.toggle("hidden", !(isValidated && isLast));
+
+				// Verrouillage des entrées si validée
+				setInputsDisabled(isValidated);
+
+				// Restaurer feedback si déjà validée
+				if (isValidated) showFeedback();
+			}
+
+			function getCurrentSelection() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+				if (q.selectionType === "single") {
+					const checked = els.options.querySelector(
+						'input[type="radio"]:checked'
+					);
+					return checked ? Number(checked.value) : null;
+				} else {
+					const checked = [
+						...els.options.querySelectorAll(
+							'input[type="checkbox"]:checked'
+						),
+					].map((n) => Number(n.value));
+					return checked.length ? checked : null;
+				}
+			}
+
+			function pointsForSelection(q, selection) {
+				if (selection === null) return 0;
+				if (q.selectionType === "single") {
+					const idx = selection;
+					return q.options[idx]?.points ?? 0;
+				}
+				// multi
+				return selection.reduce(
+					(sum, idx) => sum + (q.options[idx]?.points ?? 0),
+					0
+				);
+			}
+
+			function showFeedback() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+				const earned = state.pointsEarned[i];
+				const maxP = maxPointsForQuestion(q);
+				const ratio = maxP ? earned / maxP : 0;
+
+				els.feedback.classList.remove("hidden");
+				// Couleur douce selon ratio
+				els.feedback.classList.toggle("bg-green-50", ratio === 1);
+				els.feedback.classList.toggle("text-green-800", ratio === 1);
+				els.feedback.classList.toggle(
+					"bg-amber-50",
+					ratio > 0 && ratio < 1
+				);
+				els.feedback.classList.toggle(
+					"text-amber-800",
+					ratio > 0 && ratio < 1
+				);
+				els.feedback.classList.toggle("bg-red-50", ratio === 0);
+				els.feedback.classList.toggle("text-red-800", ratio === 0);
+
+				// Choix du message personnalisé
+				let text = "";
+				if (ratio === 1) {
+					text =
+						q.feedback_correct ||
+						"Super 👍 Vous avez choisi une réponse très pertinente.";
+				} else if (ratio === 0) {
+					text =
+						q.feedback_incorrect ||
+						"Pas de souci 🙌 Cette question met en lumière une piste à explorer.";
+				} else {
+					text =
+						q.feedback_partial ||
+						"Bien 😊 Vous êtes dans la bonne direction, une autre option pouvait rapporter davantage.";
+				}
+
+				els.feedback.innerHTML = `<div class="font-medium">${text}</div><div class="mt-1 text-gray-700">Points obtenus : <strong>${earned}</strong> / ${maxP}</div>`;
+
+				els.relevanceBox.classList.remove("hidden");
+				els.relevanceText.textContent = q.relevance;
+			}
+
+			function validate() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+
+				// Si déjà validée : verrouillé
+				if (state.validated[i]) return;
+
+				const sel = getCurrentSelection();
+				if (sel === null) {
+					els.options.classList.add("ring-2", "ring-red-300");
+					setTimeout(
+						() => els.options.classList.remove("ring-2", "ring-red-300"),
+						500
+					);
+					return;
+				}
+
+				// Enregistrer la réponse et calculer les points
+				state.answers[i] = sel;
+				const earned = pointsForSelection(q, sel);
+
+				state.validated[i] = true;
+				state.pointsEarned[i] = earned;
+				state.score += earned;
+				els.scoreLabel.textContent = `Score : ${state.score}`;
+
+				// Verrouiller les entrées et basculer les boutons
+				setInputsDisabled(true);
+				els.validateBtn.classList.add("hidden");
+
+				const isLast = i === QUESTIONS.length - 1;
+				if (isLast) {
+					els.finishBtn.classList.remove("hidden"); // Aller directement au bilan final
+					els.nextBtn.classList.add("hidden");
+				} else {
+					els.nextBtn.disabled = false; // "Suivant" devient accessible
+					els.nextBtn.classList.remove("hidden");
+				}
+
+				// Afficher le feedback personnalisé
+				showFeedback();
+			}
+
+			function nextQ() {
+				if (state.index < QUESTIONS.length - 1) {
+					state.index += 1;
+					renderQuestion();
+				}
+			}
+			function prevQ() {
+				if (state.index > 0) {
+					state.index -= 1;
+					renderQuestion();
+				}
+			}
+
+			function finalize() {
+				// Drapeaux doux (conseils importants)
+				const flags = [];
+				// Q1 matériel
+				const q1 = state.answers[0];
+				if (q1 !== 0)
+					flags.push(
+						"Matériel à prévoir : un ordinateur avec Excel installé facilitera grandement votre progression."
+					);
+				// Q2 version
+				const q2 = state.answers[1];
+				if ([2, 3, 4].includes(q2))
+					flags.push(
+						"Version/outil à clarifier : certaines fonctions avancées peuvent manquer. On peut vérifier ensemble la meilleure option."
+					);
+				// Q3 jamais ouvert
+				const q3 = state.answers[2];
+				if (q3 === 2)
+					flags.push(
+						"Une mini-initiation (1–2 h) aidera à prendre vos marques avant la partie avancée."
+					);
+				// Q4 créer/enregistrer
+				const q4 = state.answers[3];
+				if (q4 !== 0)
+					flags.push(
+						"Revoir la création et l’enregistrement d’un fichier : c’est rapide et très utile."
+					);
+
+				const total = TOTAL_MAX;
+				const score = state.score;
+				const pct = Math.round((score / total) * 100);
+
+				// Avis (bienveillant + progressif)
+				let verdict = "";
+				let style = "bg-blue-50 text-blue-900 border-blue-200";
+				if (q1 !== 0) {
+					verdict =
+						"⛔ Pré-requis matériel : équipez-vous d’un ordinateur avec Excel. Ensuite, vous serez dans les meilleures conditions pour apprendre.";
+					style = "bg-red-50 text-red-900 border-red-200";
+				} else if (pct >= 75 && flags.length === 0) {
+					verdict =
+						"✅ Très bon positionnement : vous êtes prêt·e pour la formation avancée (14 h).";
+					style = "bg-emerald-50 text-emerald-900 border-emerald-200";
+				} else if (pct >= 55) {
+					verdict =
+						"🟡 Bases solides : vous pouvez suivre la formation. Quelques rappels ciblés vous feront gagner encore en confort.";
+					style = "bg-amber-50 text-amber-900 border-amber-200";
+				} else if (pct >= 35) {
+					verdict =
+						"🟠 Position intermédiaire : une remise à niveau (2–4 h) rendra la formation avancée beaucoup plus fluide.";
+					style = "bg-orange-50 text-orange-900 border-orange-200";
+				} else {
+					verdict =
+						"🔴 Recommandation : commencez par une initiation pour installer les bases, puis revenez vers le module avancé.";
+					style = "bg-red-50 text-red-900 border-red-200";
+				}
+
+				els.finalSummary.textContent = `Score : ${score} / ${total} (${pct} %)`;
+				els.finalFlags.innerHTML = "";
+				flags.forEach((f) => {
+					const li = document.createElement("li");
+					li.textContent = f;
+					els.finalFlags.appendChild(li);
+				});
+				els.recos.className = `p-4 rounded-xl border ${style}`;
+				els.recos.textContent = verdict;
+
+				// Récap par question
+				els.recap.innerHTML = "";
+				QUESTIONS.forEach((q, idx) => {
+					const maxP = maxPointsForQuestion(q);
+					const earned = state.pointsEarned[idx] || 0;
+					const userAns = state.answers[idx];
+					const displayAns = Array.isArray(userAns)
+						? userAns.map((i) => q.options[i].label).join(" ; ")
+						: userAns === null
+						? "(aucune réponse)"
+						: q.options[userAns].label;
+
+					const bestLabels =
+						q.selectionType === "single"
+							? q.options.reduce(
+									(best, o) => (o.points > best.points ? o : best),
+									{ label: "", points: -1 }
+							  ).label
+							: q.options
+									.filter((o) => o.points > 0)
+									.map((o) => o.label)
+									.join(" ; ");
+
+					const ratio = maxP ? earned / maxP : 0;
+					const good = ratio === 1;
+					const mid = ratio > 0 && ratio < 1;
+
+					const card = document.createElement("div");
+					card.className = `p-3 rounded-xl border ${
+						good
+							? "bg-green-50 border-green-200"
+							: mid
+							? "bg-amber-50 border-amber-200"
+							: "bg-red-50 border-red-200"
+					}`;
+					card.innerHTML = `
+      <div class="text-xs uppercase tracking-wide text-gray-500">${
+			q.theme
+		}</div>
+      <div class="font-medium mt-1">${idx + 1}. ${q.question}</div>
+      <div class="mt-1 text-sm"><span class="font-semibold">Votre réponse :</span> ${displayAns}</div>
+      <div class="text-sm"><span class="font-semibold">Pistes pertinentes :</span> ${
+			bestLabels || "(—)"
+		}</div>
+      <div class="text-sm mt-1"><span class="font-semibold">Points :</span> ${earned} / ${maxP}</div>
+    `;
+					els.recap.appendChild(card);
+				});
+
+				// Afficher la section finale
+				els.final.classList.remove("hidden");
+				els.final.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
+
+			function restart() {
+				state.index = 0;
+				state.validated = Array(QUESTIONS.length).fill(false);
+				state.answers = Array(QUESTIONS.length).fill(null);
+				state.pointsEarned = Array(QUESTIONS.length).fill(0);
+				state.score = 0;
+				els.scoreLabel.textContent = `Score : 0`;
+				els.final.classList.add("hidden");
+				renderQuestion();
+			}
+
+			function exportAnswers() {
+				const payload = {
+					date: new Date().toISOString(),
+					score: state.score,
+					totalMax: TOTAL_MAX,
+					percent: Math.round((state.score / TOTAL_MAX) * 100),
+					answers: QUESTIONS.map((q, idx) => ({
+						id: q.id,
+						question: q.question,
+						selectionType: q.selectionType,
+						selectedIndices: Array.isArray(state.answers[idx])
+							? state.answers[idx]
+							: state.answers[idx] === null
+							? []
+							: [state.answers[idx]],
+						selectedLabels: Array.isArray(state.answers[idx])
+							? state.answers[idx].map((i) => q.options[i].label)
+							: state.answers[idx] === null
+							? []
+							: [q.options[state.answers[idx]].label],
+						earned: state.pointsEarned[idx],
+						maxPoints: maxPointsForQuestion(q),
+					})),
+				};
+				const blob = new Blob([JSON.stringify(payload, null, 2)], {
+					type: "application/json",
+				});
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement("a");
+				a.href = url;
+				a.download = "resultat-test-excel-points.json";
+				document.body.appendChild(a);
+				a.click();
+				URL.revokeObjectURL(url);
+				a.remove();
+			}
+
+			// Raccourcis clavier (←/→, V pour valider)
+			document.addEventListener("keydown", (e) => {
+				if (e.key === "ArrowRight") nextQ();
+				if (e.key === "ArrowLeft") prevQ();
+				if (e.key.toLowerCase() === "v") validate();
+			});
+
+			// Boutons
+			els.prevBtn.addEventListener("click", prevQ);
+			els.validateBtn.addEventListener("click", validate);
+			els.nextBtn.addEventListener("click", nextQ);
+			els.finishBtn.addEventListener("click", finalize);
+			els.restartBtn.addEventListener("click", restart);
+			els.exportBtn.addEventListener("click", exportAnswers);
+
+			// Init
+			renderQuestion();
+		</script>
+	</body>
+</html>
