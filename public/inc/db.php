@@ -140,13 +140,6 @@ function populate_database_from_json_if_empty() {
 
     $pdo->beginTransaction();
     try {
-        $insert_quiz_stmt = $pdo->prepare(
-            "INSERT INTO quizzes (slug, title, level, themes, question_count, total_max_points, source_url) VALUES (?, ?, ?, ?, ?, ?, ?)"
-        );
-        $insert_question_stmt = $pdo->prepare(
-            "INSERT INTO questions (quiz_id, index_in_quiz, payload) VALUES (?, ?, ?)"
-        );
-
         foreach ($quizzes_data as $quiz) {
             if (empty($quiz['questions']) || !is_array($quiz['questions'])) continue;
 
@@ -168,9 +161,34 @@ function populate_database_from_json_if_empty() {
             $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
             $level = extract_level_from_title($title);
 
-            $insert_quiz_stmt->execute([$slug, $title, $level, json_encode($themes), $question_count, $total_max_points, $source_file]);
-            $quiz_id = $pdo->lastInsertId();
+            // Upsert logic
+            $stmt = $pdo->prepare("SELECT id FROM quizzes WHERE slug = ?");
+            $stmt->execute([$slug]);
+            $quiz_id = $stmt->fetchColumn();
 
+            if ($quiz_id) {
+                // UPDATE
+                $update_quiz_stmt = $pdo->prepare(
+                    "UPDATE quizzes SET title = ?, level = ?, themes = ?, question_count = ?, total_max_points = ?, source_url = ? WHERE id = ?"
+                );
+                $update_quiz_stmt->execute([$title, $level, json_encode($themes), $question_count, $total_max_points, $source_file, $quiz_id]);
+
+                // Delete old questions
+                $delete_questions_stmt = $pdo->prepare("DELETE FROM questions WHERE quiz_id = ?");
+                $delete_questions_stmt->execute([$quiz_id]);
+            } else {
+                // INSERT
+                $insert_quiz_stmt = $pdo->prepare(
+                    "INSERT INTO quizzes (slug, title, level, themes, question_count, total_max_points, source_url) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                );
+                $insert_quiz_stmt->execute([$slug, $title, $level, json_encode($themes), $question_count, $total_max_points, $source_file]);
+                $quiz_id = $pdo->lastInsertId();
+            }
+
+            // Insert new questions
+            $insert_question_stmt = $pdo->prepare(
+                "INSERT INTO questions (quiz_id, index_in_quiz, payload) VALUES (?, ?, ?)"
+            );
             foreach ($questions as $index => $question) {
                 $insert_question_stmt->execute([$quiz_id, $index, json_encode($question)]);
             }
