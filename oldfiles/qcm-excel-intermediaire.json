@@ -1,0 +1,36 @@
+{
+  "title": "Excel - Niveau Intermédiaire",
+  "level": "Intermédiaire",
+  "questions": [
+    {
+      "id": "ex2q1",
+      "theme": "Fonctions avancées",
+      "question": "Quelle fonction permet de rechercher une valeur dans la première colonne d'un tableau et de renvoyer une valeur dans la même ligne d'une colonne spécifiée ?",
+      "selectionType": "single",
+      "options": [
+        { "id": "ex2q1o1", "label": "CHERCHE", "points": 0 },
+        { "id": "ex2q1o2", "label": "RECHERCHEV", "points": 1, "emoji": "✅" },
+        { "id": "ex2q1o3", "label": "INDEX", "points": 0 }
+      ],
+      "feedback_correct": "C'est exact ! RECHERCHEV (ou VLOOKUP) est la fonction parfaite pour cela.",
+      "feedback_incorrect": "Incorrect. CHERCHE trouve du texte dans une chaîne, et INDEX renvoie une valeur à une position donnée.",
+      "relevance": 0.95
+    },
+    {
+      "id": "ex2q2",
+      "theme": "Tableaux croisés dynamiques",
+      "question": "À quoi sert principalement un tableau croisé dynamique ?",
+      "selectionType": "multi",
+       "options": [
+        { "id": "ex2q2o1", "label": "À faire de jolis graphiques", "points": 0 },
+        { "id": "ex2q2o2", "label": "À résumer, analyser et explorer de grandes quantités de données", "points": 1 },
+        { "id": "ex2q2o3", "label": "À trier et filtrer des données", "points": 1 },
+        { "id": "ex2q2o4", "label": "À écrire des macros", "points": 0 }
+      ],
+      "feedback_correct": "Parfait. Sa fonction principale est de synthétiser les données pour l'analyse.",
+      "feedback_partial": "C'est en partie vrai. Bien qu'on puisse trier et filtrer, son but premier est la synthèse et l'analyse.",
+      "feedback_incorrect": "Non, ce ne sont pas les fonctions principales d'un TCD.",
+      "relevance": 0.9
+    }
+  ]
+}

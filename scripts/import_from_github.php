@@ -6,22 +6,10 @@
 // Définir un flag pour indiquer que nous sommes en mode CLI
 define('APP_RUNNING_IN_CLI', true);
 
-// DEBUG: Point de contrôle 1
-echo "Script démarré.\n";
-
 // Inclure les fichiers nécessaires. On remonte dans l'arborescence.
 require_once __DIR__ . '/../public/inc/db.php';
-// DEBUG: Point de contrôle 2
-echo "Fichier db.php inclus.\n";
-
 require_once __DIR__ . '/../public/inc/github.php';
-// DEBUG: Point de contrôle 3
-echo "Fichier github.php inclus.\n";
-
 require_once __DIR__ . '/../public/inc/scoring.php';
-// DEBUG: Point de contrôle 4
-echo "Fichier scoring.php inclus.\n";
-
 
 function run_import() {
     echo "=============================================\n";
