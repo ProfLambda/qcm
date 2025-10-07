@@ -2,7 +2,7 @@
 
 Ce projet est une application web complète de questionnaires QCM, générée pour être "clé en main". Elle est construite en PHP natif et JavaScript vanilla, sans aucun framework, conformément aux exigences.
 
-[test](https://proflambda.github.io/qcm/public/oldies/)
+[test](https://proflambda.github.io/qcm/public/oldfiles/)
 
 ## Stack Technique
 
