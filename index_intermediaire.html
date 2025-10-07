@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Test de positionnement - Excel intermédiaire</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-100 text-gray-900">
+		<div class="max-w-3xl mx-auto p-4 md:p-6">
+			<header class="mb-6">
+				<h1 class="text-2xl md:text-3xl font-bold"
+					>Test de positionnement - Excel intermédiaire</h1
+				>
+				<p class="text-sm text-gray-700 mt-1">
+					20 questions. Répondez, cliquez sur <strong>Valider</strong> pour
+					verrouiller votre réponse et voir le feedback, puis
+					<strong>Suivant</strong>.
+				</p>
+			</header>
+
+			<!-- Carte principale -->
+			<div class="bg-white rounded-2xl shadow p-5 md:p-6">
+				<!-- Progression -->
+				<div class="mb-4">
+					<div
+						class="flex items-center justify-between text-sm text-gray-600">
+						<span id="progress-label">Question 1 / 20</span>
+						<span id="score-label">Score : 0</span>
+					</div>
+					<div class="w-full bg-gray-200 h-2 rounded mt-2">
+						<div
+							id="progress-bar"
+							class="bg-emerald-500 h-2 rounded"
+							style="width: 5%"></div>
+					</div>
+				</div>
+
+				<!-- Thème -->
+				<div
+					id="theme"
+					class="text-xs uppercase tracking-wide text-gray-500 mb-2"></div>
+
+				<!-- Question -->
+				<h2
+					id="question"
+					class="text-lg md:text-xl font-semibold mb-2"></h2>
+				<div id="multi-help" class="hidden mb-3 text-xs text-gray-600"
+					>Plusieurs réponses peuvent être correctes. Cochez toutes les
+					bonnes réponses.</div
+				>
+
+				<!-- Options -->
+				<form id="options" class="space-y-2 mb-4"></form>
+
+				<!-- Feedback -->
+				<div id="feedback" class="hidden p-3 rounded-lg text-sm"></div>
+
+				<!-- Pertinence -->
+				<details id="relevance" class="hidden mt-2">
+					<summary class="cursor-pointer text-sm text-gray-700 font-medium"
+						>Pourquoi cette question est pertinente ?</summary
+					>
+					<div
+						class="mt-1 text-sm text-gray-600"
+						id="relevance-text"></div>
+				</details>
+
+				<!-- Contrôles -->
+				<div class="mt-6 flex flex-wrap gap-2">
+					<button
+						id="prev-btn"
+						class="px-4 py-2 rounded-xl border text-sm disabled:opacity-40"
+						type="button"
+						>Précédent</button
+					>
+					<button
+						id="validate-btn"
+						class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm"
+						type="button"
+						>Valider</button
+					>
+					<button
+						id="next-btn"
+						class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm disabled:opacity-40"
+						type="button"
+						disabled
+						>Suivant</button
+					>
+					<button
+						id="finish-btn"
+						class="ml-auto px-4 py-2 rounded-xl bg-gray-900 text-white text-sm hidden"
+						type="button"
+						>Voir l’avis final</button
+					>
+				</div>
+			</div>
+
+			<!-- Résultat final -->
+			<div
+				id="final"
+				class="hidden bg-white rounded-2xl shadow p-5 md:p-6 mt-6">
+				<h3 class="text-xl font-semibold mb-2">Avis final</h3>
+				<p id="final-summary" class="mb-4 text-gray-800"></p>
+				<ul
+					id="final-flags"
+					class="list-disc pl-6 text-sm text-gray-700 mb-4"></ul>
+				<div id="recos" class="p-4 rounded-xl"></div>
+
+				<details class="mt-6">
+					<summary class="cursor-pointer text-sm text-gray-700 font-medium"
+						>Voir le récap par question</summary
+					>
+					<div id="recap" class="mt-3 space-y-3"></div>
+				</details>
+
+				<div class="mt-6 flex gap-2">
+					<button
+						id="restart-btn"
+						class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm"
+						type="button"
+						>Recommencer</button
+					>
+					<button
+						id="export-btn"
+						class="px-4 py-2 rounded-xl border text-sm"
+						type="button"
+						>Exporter mes réponses (JSON)</button
+					>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			/** ==============================================================
+			 *  BANQUE DE QUESTIONS (POINTS + FEEDBACK PERSONNALISÉS)
+			 *  --------------------------------------------------------------
+			 *  Chaque option a "points" (>= 0). Aucun malus.
+			 *  - single : points = points de l’option choisie
+			 *  - multi  : points = somme des points des options cochées
+			 *  Feedback affiché selon le ratio (points / maxPoints) :
+			 *    - 1.00 → feedback_correct
+			 *    - 0.00 → feedback_incorrect
+			 *    - (0,1) → feedback_partial (si absent, message par défaut)
+			 *  ============================================================== */
+			const QUESTIONS = [
+				// Thème 1 — Pré-requis légers (matériel & fichiers)
+				{
+					id: "M1",
+					theme: "Pré-requis & environnement",
+					question: "Disposez-vous d’un Excel utilisable pour pratiquer ?",
+					selectionType: "single",
+					options: [
+						{
+							label: "Excel pour Windows ou Mac installé sur mon ordinateur",
+							points: 6,
+						},
+						{ label: "Excel Online (navigateur)", points: 3 },
+						{
+							label: "Un autre tableur (LibreOffice / Google Sheets)",
+							points: 2,
+						},
+						{ label: "Je ne sais pas / je n’ai pas Excel", points: 1 },
+					],
+					feedback_correct:
+						"Très bien, vous pourrez pratiquer confortablement.",
+					feedback_partial:
+						"C’est possible, mais certaines fonctions diffèrent selon l’outil. On s’adaptera.",
+					feedback_incorrect:
+						"Un ordinateur avec Excel (ou un équivalent proche) facilitera beaucoup votre progression.",
+					relevance:
+						"Vérifie que vous avez un environnement minimal pour suivre, même si tout n’est pas parfait.",
+				},
+				{
+					id: "M2",
+					theme: "Pré-requis & environnement",
+					question: "Que fait « Enregistrer sous » dans Excel ?",
+					selectionType: "single",
+					options: [
+						{
+							label: "Crée une copie du fichier sous un nouveau nom ou emplacement",
+							points: 4,
+						},
+						{
+							label: "Écrase le fichier actuel sans rien demander",
+							points: 0,
+						},
+						{ label: "Imprime le fichier", points: 0 },
+						{ label: "Ferme le classeur", points: 0 },
+					],
+					feedback_correct:
+						"Exact, c’est la manière sûre de créer une nouvelle version.",
+					feedback_partial:
+						"On y est presque : « Enregistrer sous » sert à créer une copie (nom/emplacement).",
+					feedback_incorrect:
+						"Pas d’inquiétude : « Enregistrer sous » sert à créer une nouvelle copie du fichier.",
+					relevance:
+						"Assure une base sereine pour gérer vos fichiers pendant la formation.",
+				},
+				{
+					id: "M3",
+					theme: "Pré-requis & environnement",
+					question:
+						"Quelle extension correspond au classeur Excel « moderne » ?",
+					selectionType: "single",
+					options: [
+						{ label: ".xlsx", points: 4 },
+						{ label: ".xls", points: 2 },
+						{ label: ".csv", points: 1 },
+						{ label: ".docx", points: 0 },
+					],
+					feedback_correct:
+						"Oui : .xlsx est l’extension standard des classeurs récents.",
+					feedback_partial:
+						".xls et .csv existent, mais .xlsx est le format recommandé aujourd’hui.",
+					feedback_incorrect:
+						".docx est pour Word. Pour Excel, préférez .xlsx.",
+					relevance:
+						"Aide à reconnaître les formats usuels quand vous ouvrez/enregistrez.",
+				},
+				{
+					id: "M4",
+					theme: "Pré-requis & environnement",
+					question: "Comment sélectionner toute une ligne rapidement ?",
+					selectionType: "single",
+					options: [
+						{ label: "Cliquer sur son numéro (à gauche)", points: 4 },
+						{
+							label: "Cliquer la première cellule puis glisser jusqu’à la fin",
+							points: 1,
+						},
+						{
+							label: "Cliquer le triangle en haut à gauche (sélectionne toute la feuille)",
+							points: 2,
+						},
+					],
+					feedback_correct:
+						"Parfait : viser le numéro de ligne est la méthode directe.",
+					feedback_partial:
+						"Il existe plus rapide : le numéro de ligne ou le triangle (toute la feuille).",
+					feedback_incorrect:
+						"Le triangle sélectionne toute la feuille, pas une ligne précise.",
+					relevance:
+						"Vérifie des gestes simples pour manipuler des zones entières.",
+				},
+
+				// Thème 2 — Saisie & mise en forme de base
+				{
+					id: "M5",
+					theme: "Saisie & mise en forme",
+					question:
+						"Afficher 15% dans une cellule : quelles méthodes conviennent ? (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Saisir 15%", points: 2 },
+						{
+							label: "Saisir 0,15 puis appliquer le format %",
+							points: 2,
+						},
+						{
+							label: "Saisir 15 puis appliquer le format % (donnera 1500%)",
+							points: 0,
+						},
+					],
+					feedback_correct:
+						"Très bien : les deux premières méthodes conviennent.",
+					feedback_partial:
+						"Bien vu. Pour 15%, on saisit « 15% » ou « 0,15 » puis on applique le format %.",
+					feedback_incorrect:
+						"Astuce : « 15% » directement, ou « 0,15 » puis le format %.",
+					relevance:
+						"Aide à relier ce que l’on saisit au format appliqué (valeur vs affichage).",
+				},
+				{
+					id: "M6",
+					theme: "Saisie & mise en forme",
+					question:
+						"Ajuster vite la largeur d’une colonne : que pouvez-vous faire ? (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Double-cliquer sur la bordure droite de l’en-tête de colonne",
+							points: 2,
+						},
+						{
+							label: "Faire glisser la bordure droite de l’en-tête",
+							points: 2,
+						},
+						{
+							label: "Activer « Renvoyer à la ligne automatiquement »",
+							points: 0,
+						},
+						{ label: "Réduire la taille de police", points: 0 },
+					],
+					feedback_correct:
+						"Exact : double-clic ou glisser la bordure ajuste la largeur.",
+					feedback_partial:
+						"On y est : pensez au double-clic ou au glisser sur la bordure de l’en-tête.",
+					feedback_incorrect:
+						"Pour la largeur, utilisez la bordure de l’en-tête de colonne (double-clic ou glisser).",
+					relevance:
+						"Montre des gestes rapides pour régler l’affichage des colonnes.",
+				},
+				{
+					id: "M7",
+					theme: "Saisie & mise en forme",
+					question:
+						"Afficher un texte long sur plusieurs lignes dans la même cellule :",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Utiliser « Renvoyer à la ligne automatiquement »",
+							points: 2,
+						},
+						{
+							label: "Insérer un saut de ligne manuel (Alt+Entrée)",
+							points: 2,
+						},
+						{ label: "« Fusionner et centrer »", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : retour à la ligne auto ou Alt+Entrée selon le besoin.",
+					feedback_partial:
+						"Bien vu. « Fusionner et centrer » ne crée pas de retour à la ligne.",
+					feedback_incorrect:
+						"Pensez au retour à la ligne auto ou au saut manuel (Alt+Entrée).",
+					relevance:
+						"Distingue mise en forme du texte et fusion de cellules (à éviter par défaut).",
+				},
+				{
+					id: "M8",
+					theme: "Saisie & mise en forme",
+					question: "Appliquer un format monétaire (€) proprement :",
+					selectionType: "single",
+					options: [
+						{
+							label: "Accueil > groupe « Nombre » > choisir le symbole €",
+							points: 4,
+						},
+						{
+							label: "Taper le symbole € manuellement dans la cellule",
+							points: 1,
+						},
+						{ label: "Laisser le format Standard", points: 0 },
+					],
+					feedback_correct:
+						"Oui, c’est la méthode recommandée (format numérique, pas du texte).",
+					feedback_partial:
+						"Mieux vaut un vrai format € plutôt que du texte contenant « € ». ",
+					feedback_incorrect:
+						"Un format monétaire dédié est préférable au format Standard.",
+					relevance:
+						"Utiliser les formats protège les calculs et l’alignement des nombres.",
+				},
+				{
+					id: "M9",
+					theme: "Saisie & mise en forme",
+					question:
+						"« Mettre sous forme de tableau » (Format as Table) apporte… (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Des filtres automatiques sur les en-têtes",
+							points: 2,
+						},
+						{ label: "Un style avec bandes alternées", points: 1 },
+						{
+							label: "La recopie automatique des formules dans la colonne",
+							points: 2,
+						},
+						{ label: "Un tri croissant obligatoire", points: 0 },
+						{ label: "Une sauvegarde automatique du fichier", points: 0 },
+					],
+					feedback_correct:
+						"Exact : filtres, style et formules qui se propagent dans la colonne.",
+					feedback_partial:
+						"Bien. Les filtres et le style sont là ; les formules se propagent aussi en tableau.",
+					feedback_incorrect:
+						"L’outil ajoute filtres, style et facilite la maintenance des colonnes de formules.",
+					relevance:
+						"Pose les bases d’un tableau « intelligent » : plus propre et plus pratique.",
+				},
+				{
+					id: "M10",
+					theme: "Saisie & mise en forme",
+					question: "À quoi sert « Figer les volets » ?",
+					selectionType: "single",
+					options: [
+						{
+							label: "Garder visibles les en-têtes quand on défile",
+							points: 4,
+						},
+						{
+							label: "Verrouiller la feuille par mot de passe",
+							points: 0,
+						},
+						{ label: "Empêcher le tri et le filtre", points: 0 },
+					],
+					feedback_correct:
+						"Exact : très utile pour lire un tableau long.",
+					feedback_partial:
+						"L’idée : garder des lignes/colonnes visibles pendant le défilement.",
+					feedback_incorrect:
+						"Ce n’est pas une protection : cela sert à garder des en-têtes visibles.",
+					relevance:
+						"Améliore la lecture quand on parcourt des listes longues.",
+				},
+
+				// Thème 3 — Calculs très basiques
+				{
+					id: "M11",
+					theme: "Calculs de base",
+					question: "Comment commencer une formule dans Excel ?",
+					selectionType: "single",
+					options: [
+						{ label: "Avec le signe « = »", points: 4 },
+						{
+							label: "Avec « + » (fonctionne aussi, selon versions)",
+							points: 3,
+						},
+						{ label: "Sans aucun signe", points: 0 },
+					],
+					feedback_correct:
+						"Oui : « = » est la manière standard de démarrer une formule.",
+					feedback_partial:
+						"Ça peut fonctionner, mais la bonne habitude reste de commencer par « = ». ",
+					feedback_incorrect:
+						"En Excel, une formule commence par « = » (ou « + » selon les versions).",
+					relevance: "Asseoir le réflexe de base pour tous les calculs.",
+				},
+				{
+					id: "M12",
+					theme: "Calculs de base",
+					question:
+						"Additionner rapidement une colonne de nombres : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Utiliser le bouton « AutoSomme » (Σ)", points: 2 },
+						{ label: "Écrire la fonction =SOMME(plage)", points: 3 },
+						{ label: "Écrire manuellement n1+n2+n3…", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : AutoSomme insère =SOMME(…) automatiquement ; =SOMME reste la méthode directe.",
+					feedback_partial:
+						"Bien vu. AutoSomme insère justement la fonction =SOMME(…).",
+					feedback_incorrect:
+						"Évitez les additions à rallonge : préférez AutoSomme / =SOMME(…).",
+					relevance:
+						"Place les bons réflexes pour gagner du temps sur les totaux.",
+				},
+				{
+					id: "M13",
+					theme: "Calculs de base",
+					question:
+						"Calculer la moyenne de B2 à B10 : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "=MOYENNE(B2:B10)", points: 3 },
+						{ label: "=SOMME(B2:B10)/9", points: 2 },
+						{ label: "=B2+B10/9", points: 0 },
+					],
+					feedback_correct:
+						"Exact : les deux premières méthodes donnent la moyenne.",
+					feedback_partial:
+						"Bien vu. On peut utiliser MOYENNE ou SOMME/nb d’éléments.",
+					feedback_incorrect:
+						"Ici, privilégiez =MOYENNE(B2:B10) ou SOMME/9.",
+					relevance:
+						"Montre qu’il y a souvent plusieurs chemins corrects.",
+				},
+				{
+					id: "M14",
+					theme: "Calculs de base",
+					question:
+						"Recopier une formule vers le bas efficacement : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Tirer la poignée de recopie vers le bas",
+							points: 2,
+						},
+						{ label: "Double-cliquer la poignée de recopie", points: 2 },
+						{ label: "Copier-coller la cellule", points: 1 },
+						{ label: "Retaper la formule à chaque ligne", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : poignée (tirer ou double-cliquer) et copier-coller sont efficaces.",
+					feedback_partial:
+						"Bien. Pensez au double-clic sur la poignée pour aller jusqu’en bas du bloc.",
+					feedback_incorrect:
+						"Utilisez la poignée de recopie pour aller bien plus vite.",
+					relevance:
+						"Installe des gestes rapides autour de la poignée de recopie.",
+				},
+				{
+					id: "M15",
+					theme: "Calculs de base",
+					question: "Dans la notation A1:A10, le « : » signifie…",
+					selectionType: "single",
+					options: [
+						{ label: "Une plage continue de A1 jusqu’à A10", points: 4 },
+						{ label: "Une addition", points: 0 },
+						{
+							label: "Un séparateur d’arguments de fonctions",
+							points: 0,
+						},
+					],
+					feedback_correct: "Exact : c’est une plage continue.",
+					feedback_partial:
+						"Le « : » relie le début et la fin d’une plage.",
+					feedback_incorrect:
+						"Ici, « : » n’est ni une addition ni un séparateur d’arguments.",
+					relevance:
+						"Comprendre la syntaxe des plages (A1:A10) est fondamental.",
+				},
+
+				// Thème 4 — Premières manipulations de liste
+				{
+					id: "M16",
+					theme: "Listes & lecture",
+					question:
+						"Différence entre Trier et Filtrer : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{
+							label: "Trier réordonne les lignes selon un critère",
+							points: 2,
+						},
+						{
+							label: "Filtrer masque temporairement certaines lignes",
+							points: 2,
+						},
+						{ label: "Trier supprime des lignes", points: 0 },
+						{ label: "Filtrer supprime des lignes", points: 0 },
+					],
+					feedback_correct:
+						"Exact : trier réordonne, filtrer masque (rien n’est supprimé).",
+					feedback_partial:
+						"On progresse : trier ≠ filtrer ; ni l’un ni l’autre ne supprime des lignes.",
+					feedback_incorrect:
+						"Rappel : trier réordonne, filtrer masque ; aucune ligne n’est supprimée.",
+					relevance:
+						"Met en place les bons réflexes d’exploration des données.",
+				},
+				{
+					id: "M17",
+					theme: "Listes & lecture",
+					question:
+						"Activer rapidement un filtre sur un tableau : (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: "Onglet Données > Filtrer", points: 3 },
+						{ label: "Raccourci Ctrl+Maj+L", points: 2 },
+						{
+							label: "Onglet Accueil > Trier et filtrer > Filtrer",
+							points: 2,
+						},
+						{ label: "Onglet Insertion > Filtrer", points: 0 },
+					],
+					feedback_correct:
+						"Parfait : menu Données, bouton Filtrer, ou Ctrl+Maj+L fonctionnent.",
+					feedback_partial:
+						"Bien vu. Essayez aussi le raccourci Ctrl+Maj+L.",
+					feedback_incorrect:
+						"Le filtre se trouve dans Données (ou Accueil > Trier et filtrer) et via Ctrl+Maj+L.",
+					relevance:
+						"Ancre des accès rapides pour gagner du temps au quotidien.",
+				},
+				{
+					id: "M18",
+					theme: "Listes & lecture",
+					question:
+						"Quel graphique convient le mieux pour comparer des valeurs par catégorie ?",
+					selectionType: "single",
+					options: [
+						{ label: "Histogramme (colonnes)", points: 4 },
+						{ label: "Secteurs (camembert)", points: 1 },
+						{ label: "Courbes", points: 1 },
+					],
+					feedback_correct:
+						"Oui : les colonnes comparent bien des catégories.",
+					feedback_partial:
+						"C’est possible, mais la colonne est souvent plus lisible pour comparer.",
+					feedback_incorrect:
+						"Pour comparer des catégories, privilégiez l’histogramme (colonnes).",
+					relevance: "Aide à choisir un visuel simple et efficace.",
+				},
+				{
+					id: "M19",
+					theme: "Listes & lecture",
+					question:
+						"Enlever des lignes strictement identiques dans une liste :",
+					selectionType: "single",
+					options: [
+						{ label: "Données > Supprimer les doublons", points: 4 },
+						{ label: "Filtrer", points: 1 },
+						{ label: "Rechercher/Remplacer", points: 1 },
+						{
+							label: "Supprimer manuellement ligne par ligne",
+							points: 0,
+						},
+					],
+					feedback_correct:
+						"Exact : l’outil dédié est « Supprimer les doublons ». ",
+					feedback_partial:
+						"Il existe un outil dédié : « Supprimer les doublons ». Plus sûr et plus rapide.",
+					feedback_incorrect:
+						"Préférez l’outil « Supprimer les doublons » : simple et efficace.",
+					relevance:
+						"Donne le bon réflexe pour nettoyer rapidement une base.",
+				},
+				{
+					id: "M20",
+					theme: "Listes & lecture",
+					question:
+						"Quels types de fichiers Excel peut-il ouvrir facilement ? (plusieurs réponses possibles)",
+					selectionType: "multi",
+					options: [
+						{ label: ".xlsx", points: 2 },
+						{ label: ".csv", points: 2 },
+						{ label: ".txt", points: 1 },
+						{ label: ".docx", points: 0 },
+					],
+					feedback_correct:
+						"Oui : .xlsx, .csv et .txt sont des formats habituels pour Excel.",
+					feedback_partial:
+						"Bien vu. Excel ouvre notamment .xlsx et .csv (et aussi .txt).",
+					feedback_incorrect:
+						".docx correspond à Word. Excel ouvre plutôt .xlsx, .csv, .txt…",
+					relevance:
+						"Aide à reconnaître les formats courants pour l’import ou l’ouverture.",
+				},
+			];
+
+			/* ==============================================================
+   LOGIQUE / ETAT
+   ============================================================== */
+			const state = {
+				index: 0,
+				validated: Array(QUESTIONS.length).fill(false),
+				answers: Array(QUESTIONS.length).fill(null), // single: number|null ; multi: number[]|null
+				pointsEarned: Array(QUESTIONS.length).fill(0),
+				score: 0,
+			};
+
+			const els = {
+				progressLabel: document.getElementById("progress-label"),
+				scoreLabel: document.getElementById("score-label"),
+				progressBar: document.getElementById("progress-bar"),
+				theme: document.getElementById("theme"),
+				question: document.getElementById("question"),
+				multiHelp: document.getElementById("multi-help"),
+				options: document.getElementById("options"),
+				feedback: document.getElementById("feedback"),
+				relevanceBox: document.getElementById("relevance"),
+				relevanceText: document.getElementById("relevance-text"),
+				prevBtn: document.getElementById("prev-btn"),
+				validateBtn: document.getElementById("validate-btn"),
+				nextBtn: document.getElementById("next-btn"),
+				finishBtn: document.getElementById("finish-btn"),
+				final: document.getElementById("final"),
+				finalSummary: document.getElementById("final-summary"),
+				finalFlags: document.getElementById("final-flags"),
+				recos: document.getElementById("recos"),
+				recap: document.getElementById("recap"),
+				restartBtn: document.getElementById("restart-btn"),
+				exportBtn: document.getElementById("export-btn"),
+			};
+
+			function setInputsDisabled(disabled) {
+				[...els.options.querySelectorAll("input")].forEach(
+					(inp) => (inp.disabled = disabled)
+				);
+				[...els.options.querySelectorAll("label")].forEach((lab) => {
+					lab.classList.toggle("opacity-60", disabled);
+					lab.classList.toggle("cursor-not-allowed", disabled);
+				});
+			}
+
+			function maxPointsForQuestion(q) {
+				if (q.selectionType === "single") {
+					return Math.max(...q.options.map((o) => o.points));
+				}
+				// multi: somme des points positifs (les réponses pertinentes)
+				return q.options.reduce((sum, o) => sum + Math.max(0, o.points), 0);
+			}
+
+			const TOTAL_MAX = QUESTIONS.reduce(
+				(acc, q) => acc + maxPointsForQuestion(q),
+				0
+			);
+
+			function renderQuestion() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+
+				els.progressLabel.textContent = `Question ${i + 1} / ${
+					QUESTIONS.length
+				}`;
+				const pct = Math.max(5, Math.round((i / QUESTIONS.length) * 100));
+				els.progressBar.style.width = `${pct}%`;
+
+				els.theme.textContent = q.theme;
+				els.question.innerHTML = q.question;
+
+				// Aide multi
+				els.multiHelp.classList.toggle(
+					"hidden",
+					q.selectionType !== "multi"
+				);
+
+				// Options
+				els.options.innerHTML = "";
+				if (q.selectionType === "single") {
+					q.options.forEach((opt, idx) => {
+						const id = `q${i}_opt${idx}`;
+						const checked = state.answers[i] === idx ? "checked" : "";
+						els.options.insertAdjacentHTML(
+							"beforeend",
+							`
+        <label for="${id}" class="flex items-start gap-3 p-3 border rounded-xl hover:bg-gray-50 cursor-pointer">
+          <input ${checked} id="${id}" name="q${i}" type="radio" value="${idx}" class="mt-1" />
+          <span>${opt.label}</span>
+        </label>
+      `
+						);
+					});
+				} else {
+					const saved = Array.isArray(state.answers[i])
+						? state.answers[i]
+						: [];
+					q.options.forEach((opt, idx) => {
+						const id = `q${i}_opt${idx}`;
+						const checked = saved.includes(idx) ? "checked" : "";
+						els.options.insertAdjacentHTML(
+							"beforeend",
+							`
+        <label for="${id}" class="flex items-start gap-3 p-3 border rounded-xl hover:bg-gray-50 cursor-pointer">
+          <input ${checked} id="${id}" name="q${i}" type="checkbox" value="${idx}" class="mt-1" />
+          <span>${opt.label}</span>
+        </label>
+      `
+						);
+					});
+				}
+
+				// Reset feedback
+				els.feedback.classList.add("hidden");
+				els.feedback.classList.remove(
+					"bg-green-50",
+					"text-green-800",
+					"bg-amber-50",
+					"text-amber-800",
+					"bg-red-50",
+					"text-red-800"
+				);
+				els.feedback.innerHTML = "";
+				els.relevanceBox.classList.add("hidden");
+				els.relevanceText.textContent = "";
+
+				// Boutons / états
+				const isValidated = state.validated[i];
+				els.prevBtn.disabled = i === 0;
+
+				// "Valider" disparaît si déjà validée
+				els.validateBtn.classList.toggle("hidden", isValidated);
+
+				// "Suivant" / "Voir l’avis final"
+				const isLast = i === QUESTIONS.length - 1;
+				els.nextBtn.classList.toggle("hidden", isLast);
+				els.nextBtn.disabled = !isValidated;
+				els.finishBtn.classList.toggle("hidden", !(isValidated && isLast));
+
+				// Verrouillage des entrées si validée
+				setInputsDisabled(isValidated);
+
+				// Restaurer feedback si déjà validée
+				if (isValidated) showFeedback();
+			}
+
+			function getCurrentSelection() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+				if (q.selectionType === "single") {
+					const checked = els.options.querySelector(
+						'input[type="radio"]:checked'
+					);
+					return checked ? Number(checked.value) : null;
+				} else {
+					const checked = [
+						...els.options.querySelectorAll(
+							'input[type="checkbox"]:checked'
+						),
+					].map((n) => Number(n.value));
+					return checked.length ? checked : null;
+				}
+			}
+
+			function pointsForSelection(q, selection) {
+				if (selection === null) return 0;
+				if (q.selectionType === "single") {
+					const idx = selection;
+					return q.options[idx]?.points ?? 0;
+				}
+				// multi
+				return selection.reduce(
+					(sum, idx) => sum + (q.options[idx]?.points ?? 0),
+					0
+				);
+			}
+
+			function showFeedback() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+				const earned = state.pointsEarned[i];
+				const maxP = maxPointsForQuestion(q);
+				const ratio = maxP ? earned / maxP : 0;
+
+				els.feedback.classList.remove("hidden");
+				// Couleur douce selon ratio
+				els.feedback.classList.toggle("bg-green-50", ratio === 1);
+				els.feedback.classList.toggle("text-green-800", ratio === 1);
+				els.feedback.classList.toggle(
+					"bg-amber-50",
+					ratio > 0 && ratio < 1
+				);
+				els.feedback.classList.toggle(
+					"text-amber-800",
+					ratio > 0 && ratio < 1
+				);
+				els.feedback.classList.toggle("bg-red-50", ratio === 0);
+				els.feedback.classList.toggle("text-red-800", ratio === 0);
+
+				// Choix du message personnalisé
+				let text = "";
+				if (ratio === 1) {
+					text =
+						q.feedback_correct ||
+						"Super 👍 Vous avez choisi une réponse très pertinente.";
+				} else if (ratio === 0) {
+					text =
+						q.feedback_incorrect ||
+						"Pas de souci 🙌 Cette question met en lumière une piste à explorer.";
+				} else {
+					text =
+						q.feedback_partial ||
+						"Bien 😊 Vous êtes dans la bonne direction, une autre option pouvait rapporter davantage.";
+				}
+
+				els.feedback.innerHTML = `<div class="font-medium">${text}</div><div class="mt-1 text-gray-700">Points obtenus : <strong>${earned}</strong> / ${maxP}</div>`;
+
+				els.relevanceBox.classList.remove("hidden");
+				els.relevanceText.textContent = q.relevance;
+			}
+
+			function validate() {
+				const i = state.index;
+				const q = QUESTIONS[i];
+
+				// Si déjà validée : verrouillé
+				if (state.validated[i]) return;
+
+				const sel = getCurrentSelection();
+				if (sel === null) {
+					els.options.classList.add("ring-2", "ring-red-300");
+					setTimeout(
+						() => els.options.classList.remove("ring-2", "ring-red-300"),
+						500
+					);
+					return;
+				}
+
+				// Enregistrer la réponse et calculer les points
+				state.answers[i] = sel;
+				const earned = pointsForSelection(q, sel);
+
+				state.validated[i] = true;
+				state.pointsEarned[i] = earned;
+				state.score += earned;
+				els.scoreLabel.textContent = `Score : ${state.score}`;
+
+				// Verrouiller les entrées et basculer les boutons
+				setInputsDisabled(true);
+				els.validateBtn.classList.add("hidden");
+
+				const isLast = i === QUESTIONS.length - 1;
+				if (isLast) {
+					els.finishBtn.classList.remove("hidden"); // Aller directement au bilan final
+					els.nextBtn.classList.add("hidden");
+				} else {
+					els.nextBtn.disabled = false; // "Suivant" devient accessible
+					els.nextBtn.classList.remove("hidden");
+				}
+
+				// Afficher le feedback personnalisé
+				showFeedback();
+			}
+
+			function nextQ() {
+				if (state.index < QUESTIONS.length - 1) {
+					state.index += 1;
+					renderQuestion();
+				}
+			}
+			function prevQ() {
+				if (state.index > 0) {
+					state.index -= 1;
+					renderQuestion();
+				}
+			}
+
+			function finalize() {
+				// Drapeaux doux (conseils importants)
+				const flags = [];
+				// Q1 matériel
+				const q1 = state.answers[0];
+				if (q1 !== 0)
+					flags.push(
+						"Matériel à prévoir : un ordinateur avec Excel installé facilitera grandement votre progression."
+					);
+				// Q2 version
+				const q2 = state.answers[1];
+				if ([2, 3, 4].includes(q2))
+					flags.push(
+						"Version/outil à clarifier : certaines fonctions avancées peuvent manquer. On peut vérifier ensemble la meilleure option."
+					);
+				// Q3 jamais ouvert
+				const q3 = state.answers[2];
+				if (q3 === 2)
+					flags.push(
+						"Une mini-initiation (1–2 h) aidera à prendre vos marques avant la partie avancée."
+					);
+				// Q4 créer/enregistrer
+				const q4 = state.answers[3];
+				if (q4 !== 0)
+					flags.push(
+						"Revoir la création et l’enregistrement d’un fichier : c’est rapide et très utile."
+					);
+
+				const total = TOTAL_MAX;
+				const score = state.score;
+				const pct = Math.round((score / total) * 100);
+
+				// Avis (bienveillant + progressif)
+				let verdict = "";
+				let style = "bg-blue-50 text-blue-900 border-blue-200";
+				if (q1 !== 0) {
+					verdict =
+						"⛔ Pré-requis matériel : équipez-vous d’un ordinateur avec Excel. Ensuite, vous serez dans les meilleures conditions pour apprendre.";
+					style = "bg-red-50 text-red-900 border-red-200";
+				} else if (pct >= 75 && flags.length === 0) {
+					verdict =
+						"✅ Très bon positionnement : vous êtes prêt·e pour la formation avancée (14 h).";
+					style = "bg-emerald-50 text-emerald-900 border-emerald-200";
+				} else if (pct >= 55) {
+					verdict =
+						"🟡 Bases solides : vous pouvez suivre la formation. Quelques rappels ciblés vous feront gagner encore en confort.";
+					style = "bg-amber-50 text-amber-900 border-amber-200";
+				} else if (pct >= 35) {
+					verdict =
+						"🟠 Position intermédiaire : une remise à niveau (2–4 h) rendra la formation avancée beaucoup plus fluide.";
+					style = "bg-orange-50 text-orange-900 border-orange-200";
+				} else {
+					verdict =
+						"🔴 Recommandation : commencez par une initiation pour installer les bases, puis revenez vers le module avancé.";
+					style = "bg-red-50 text-red-900 border-red-200";
+				}
+
+				els.finalSummary.textContent = `Score : ${score} / ${total} (${pct} %)`;
+				els.finalFlags.innerHTML = "";
+				flags.forEach((f) => {
+					const li = document.createElement("li");
+					li.textContent = f;
+					els.finalFlags.appendChild(li);
+				});
+				els.recos.className = `p-4 rounded-xl border ${style}`;
+				els.recos.textContent = verdict;
+
+				// Récap par question
+				els.recap.innerHTML = "";
+				QUESTIONS.forEach((q, idx) => {
+					const maxP = maxPointsForQuestion(q);
+					const earned = state.pointsEarned[idx] || 0;
+					const userAns = state.answers[idx];
+					const displayAns = Array.isArray(userAns)
+						? userAns.map((i) => q.options[i].label).join(" ; ")
+						: userAns === null
+						? "(aucune réponse)"
+						: q.options[userAns].label;
+
+					const bestLabels =
+						q.selectionType === "single"
+							? q.options.reduce(
+									(best, o) => (o.points > best.points ? o : best),
+									{ label: "", points: -1 }
+							  ).label
+							: q.options
+									.filter((o) => o.points > 0)
+									.map((o) => o.label)
+									.join(" ; ");
+
+					const ratio = maxP ? earned / maxP : 0;
+					const good = ratio === 1;
+					const mid = ratio > 0 && ratio < 1;
+
+					const card = document.createElement("div");
+					card.className = `p-3 rounded-xl border ${
+						good
+							? "bg-green-50 border-green-200"
+							: mid
+							? "bg-amber-50 border-amber-200"
+							: "bg-red-50 border-red-200"
+					}`;
+					card.innerHTML = `
+      <div class="text-xs uppercase tracking-wide text-gray-500">${
+			q.theme
+		}</div>
+      <div class="font-medium mt-1">${idx + 1}. ${q.question}</div>
+      <div class="mt-1 text-sm"><span class="font-semibold">Votre réponse :</span> ${displayAns}</div>
+      <div class="text-sm"><span class="font-semibold">Pistes pertinentes :</span> ${
+			bestLabels || "(—)"
+		}</div>
+      <div class="text-sm mt-1"><span class="font-semibold">Points :</span> ${earned} / ${maxP}</div>
+    `;
+					els.recap.appendChild(card);
+				});
+
+				// Afficher la section finale
+				els.final.classList.remove("hidden");
+				els.final.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
+
+			function restart() {
+				state.index = 0;
+				state.validated = Array(QUESTIONS.length).fill(false);
+				state.answers = Array(QUESTIONS.length).fill(null);
+				state.pointsEarned = Array(QUESTIONS.length).fill(0);
+				state.score = 0;
+				els.scoreLabel.textContent = `Score : 0`;
+				els.final.classList.add("hidden");
+				renderQuestion();
+			}
+
+			function exportAnswers() {
+				const payload = {
+					date: new Date().toISOString(),
+					score: state.score,
+					totalMax: TOTAL_MAX,
+					percent: Math.round((state.score / TOTAL_MAX) * 100),
+					answers: QUESTIONS.map((q, idx) => ({
+						id: q.id,
+						question: q.question,
+						selectionType: q.selectionType,
+						selectedIndices: Array.isArray(state.answers[idx])
+							? state.answers[idx]
+							: state.answers[idx] === null
+							? []
+							: [state.answers[idx]],
+						selectedLabels: Array.isArray(state.answers[idx])
+							? state.answers[idx].map((i) => q.options[i].label)
+							: state.answers[idx] === null
+							? []
+							: [q.options[state.answers[idx]].label],
+						earned: state.pointsEarned[idx],
+						maxPoints: maxPointsForQuestion(q),
+					})),
+				};
+				const blob = new Blob([JSON.stringify(payload, null, 2)], {
+					type: "application/json",
+				});
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement("a");
+				a.href = url;
+				a.download = "resultat-test-excel-points.json";
+				document.body.appendChild(a);
+				a.click();
+				URL.revokeObjectURL(url);
+				a.remove();
+			}
+
+			// Raccourcis clavier (←/→, V pour valider)
+			document.addEventListener("keydown", (e) => {
+				if (e.key === "ArrowRight") nextQ();
+				if (e.key === "ArrowLeft") prevQ();
+				if (e.key.toLowerCase() === "v") validate();
+			});
+
+			// Boutons
+			els.prevBtn.addEventListener("click", prevQ);
+			els.validateBtn.addEventListener("click", validate);
+			els.nextBtn.addEventListener("click", nextQ);
+			els.finishBtn.addEventListener("click", finalize);
+			els.restartBtn.addEventListener("click", restart);
+			els.exportBtn.addEventListener("click", exportAnswers);
+
+			// Init
+			renderQuestion();
+		</script>
+	</body>
+</html>
