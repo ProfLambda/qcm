@@ -12,6 +12,11 @@ $email = '';
 $display_name = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Correction : Initialiser la base de données AVANT toute opération.
+    // Cela garantit que les tables existent avant les vérifications.
+    initialize_database();
+    $pdo = get_db_connection();
+
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
@@ -33,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 2. Vérifier si l'email est déjà utilisé
     if (empty($errors)) {
-        $pdo = get_db_connection();
         $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
@@ -44,10 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 3. Si tout est OK, créer l'utilisateur
     if (empty($errors)) {
         $password_hash = password_hash($password, PASSWORD_ARGON2ID);
-
-        // Initialiser la DB si nécessaire (au cas où c'est le tout premier utilisateur)
-        initialize_database();
-        $pdo = get_db_connection();
 
         $stmt = $pdo->prepare(
             "INSERT INTO users (email, password_hash, display_name) VALUES (?, ?, ?)"
