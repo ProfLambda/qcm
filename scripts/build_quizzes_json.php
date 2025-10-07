@@ -88,53 +88,56 @@ function build_json() {
 }
 
 function extract_questions_from_html(string $htmlContent): array {
+    // 1. Extract the JS array string
     $pattern = '/const\s+QUESTIONS\s*=\s*(\[[\s\S]*?\])\s*;/m';
     if (!preg_match($pattern, $htmlContent, $matches)) {
         throw new Exception("Constante 'QUESTIONS' introuvable.");
     }
     $js_string = $matches[1];
 
-    // 1. Cleanup: remove comments and trailing commas
-    $js_string = preg_replace('!/\*[\s\S]*?\*/!s', '', $js_string); // Block comments
-    $js_string = preg_replace('!//.*!', '', $js_string);             // Line comments
-    $js_string = preg_replace('/,\s*([}\]])/', '$1', $js_string);     // Trailing commas
-
-    // 2. Quote all unquoted keys
-    $js_string = preg_replace('/([{,]\s*)([a-zA-Z0-9_]+)\s*:/', '$1"$2":', $js_string);
-
-    // 3. Temporarily replace all double-quoted strings with placeholders
     $placeholders = [];
     $i = 0;
+
+    // 2. Protect all strings (single and double quoted) by replacing them with placeholders.
+    // Process double-quoted strings first.
     $js_string = preg_replace_callback(
         '/"((?:[^"\\\\]|\\\\.)*)"/',
         function ($matches) use (&$placeholders, &$i) {
-            $placeholder = '___JSON_PLACEHOLDER_' . $i++ . '___';
-            $placeholders[$placeholder] = $matches[0];
+            $placeholder = '___PLACEHOLDER_' . $i++ . '___';
+            $placeholders[$placeholder] = $matches[0]; // Store the original, valid JSON string part
+            return $placeholder;
+        },
+        $js_string
+    );
+    // Process single-quoted strings.
+    $js_string = preg_replace_callback(
+        "/'((?:[^'\\\\]|\\\\.)*)'/",
+        function ($matches) use (&$placeholders, &$i) {
+            $placeholder = '___PLACEHOLDER_' . $i++ . '___';
+            // Convert the content to a valid JSON string (double-quoted, with proper escaping)
+            $placeholders[$placeholder] = json_encode($matches[1], JSON_UNESCAPED_UNICODE);
             return $placeholder;
         },
         $js_string
     );
 
-    // 4. Now it's safe to convert all single-quoted strings to double-quoted
-    $js_string = preg_replace_callback(
-        "/'((?:[^'\\\\]|\\\\.)*)'/",
-        function ($matches) {
-            return '"' . str_replace('"', '\"', $matches[1]) . '"';
-        },
-        $js_string
-    );
+    // 3. Now that strings are protected, clean up the remaining syntax
+    $js_string = preg_replace('!/\*[\s\S]*?\*/!s', '', $js_string); // Block comments
+    $js_string = preg_replace('!//.*!', '', $js_string);             // Line comments
+    $js_string = preg_replace('/([{,]\s*)([a-zA-Z0-9_]+)\s*:/', '$1"$2":', $js_string); // Quote keys
+    $js_string = preg_replace('/,\s*([}\]])/', '$1', $js_string);     // Trailing commas
 
-    // 5. Restore the original double-quoted strings
+    // 4. Restore all placeholders.
     if (!empty($placeholders)) {
-        krsort($placeholders); // Process in reverse to avoid conflicts
+        // No need to sort, as placeholders are unique and won't contain each other.
         $js_string = str_replace(array_keys($placeholders), array_values($placeholders), $js_string);
     }
 
-    // 6. Decode the final JSON string
+    // 5. Decode the final JSON string
     $questions = json_decode($js_string, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
-        throw new Exception("Erreur de décodage JSON: " . json_last_error_msg());
+        throw new Exception("Erreur de décodage JSON: " . json_last_error_msg() . "\nChaîne finale:\n" . $js_string);
     }
 
     return $questions;
