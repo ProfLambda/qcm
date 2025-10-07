@@ -1,2 +1,2 @@
 # qcm
-[qcm](https://github.com/ProfLambda/qcm/)
+[qcm](https://proflambda.github.io/qcm/)
