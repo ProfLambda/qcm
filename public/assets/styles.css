@@ -1,0 +1,72 @@
+/* Fichier CSS pour des styles additionnels légers. */
+/* La majorité du style est gérée par Tailwind CSS via CDN. */
+
+/* Style pour le corps de la page pour une meilleure typographie par défaut */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animation pour la modale de résultats */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+}
+
+/* Style pour les inputs désactivés dans le quiz */
+input:disabled,
+button:disabled,
+select:disabled,
+textarea:disabled {
+    opacity: 0.7;
+    cursor: not-allowed !important;
+}
+
+/* Style pour les items de ranking pendant le drag & drop */
+li[draggable="true"] {
+    user-select: none;
+}
+li[draggable="true"].dragging {
+    opacity: 0.5;
+}
+
+/* Assurer que le menu burger <details> se ferme quand on clique sur un lien */
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+
+@keyframes sweep {
+  0%    {opacity: 0; transform: translateX(-10px)}
+  100%  {opacity: 1; transform: translateX(0)}
+}
+
+/* Styles pour les couleurs de feedback custom, si non géré par Tailwind JIT */
+.bg-feedback-correct {
+    background-color: rgba(210, 247, 226, 0.9);
+}
+.bg-feedback-partial {
+    background-color: rgba(254, 243, 199, 0.9);
+}
+.bg-feedback-incorrect {
+    background-color: rgba(254, 226, 226, 0.9);
+}
+
+.ring-red-500 {
+    --tw-ring-color: rgb(239 68 68);
+}
+
+.ring-2 {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
