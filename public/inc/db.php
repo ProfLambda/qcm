@@ -97,10 +97,100 @@ function initialize_database() {
             // La table n'existe pas, on exécute le script de création
             $schema = file_get_contents($schema_path);
             $pdo->exec($schema);
+
+            // Une fois le schéma créé, on peuple la base si elle est vide
+            populate_database_from_json_if_empty();
         }
     } catch (PDOException $e) {
         // Gérer l'erreur d'initialisation
         throw new Exception("Erreur lors de l'initialisation de la base de données : " . $e->getMessage());
+    }
+}
+
+/**
+ * Peuple la base de données à partir du fichier quizzes.json si la table quizzes est vide.
+ */
+function populate_database_from_json_if_empty() {
+    require_once __DIR__ . '/scoring.php';
+    $pdo = get_db_connection();
+
+    // Vérifier si la table des quiz est vide
+    $stmt = $pdo->query("SELECT COUNT(*) FROM quizzes");
+    if ($stmt->fetchColumn() > 0) {
+        return; // La table n'est pas vide, on ne fait rien.
+    }
+
+    $json_path = __DIR__ . '/../data/quizzes.json';
+    if (!file_exists($json_path)) {
+        throw new Exception("Le fichier de données 'quizzes.json' est introuvable. L'application ne peut pas être initialisée.");
+    }
+
+    $json_content = file_get_contents($json_path);
+    $quizzes_data = json_decode($json_content, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception("Erreur de décodage du fichier quizzes.json: " . json_last_error_msg());
+    }
+
+    $pdo->beginTransaction();
+    try {
+        foreach ($quizzes_data as $quiz) {
+            if (empty($quiz['questions']) || !is_array($quiz['questions'])) continue;
+
+            $questions = $quiz['questions'];
+            $title = $quiz['title'] ?? 'Titre inconnu';
+            $source_file = $quiz['source_file'] ?? 'N/A';
+
+            $question_count = count($questions);
+            $total_max_points = 0;
+            $themes = [];
+
+            foreach ($questions as $q) {
+                $total_max_points += calculate_max_points_for_question($q);
+                if (isset($q['theme']) && !in_array($q['theme'], $themes)) {
+                    $themes[] = $q['theme'];
+                }
+            }
+
+            $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
+            $level = extract_level_from_title($title);
+
+            // Upsert logic
+            $stmt = $pdo->prepare("SELECT id FROM quizzes WHERE slug = ?");
+            $stmt->execute([$slug]);
+            $quiz_id = $stmt->fetchColumn();
+
+            if ($quiz_id) {
+                // UPDATE
+                $update_quiz_stmt = $pdo->prepare(
+                    "UPDATE quizzes SET title = ?, level = ?, themes = ?, question_count = ?, total_max_points = ?, source_url = ? WHERE id = ?"
+                );
+                $update_quiz_stmt->execute([$title, $level, json_encode($themes), $question_count, $total_max_points, $source_file, $quiz_id]);
+
+                // Delete old questions
+                $delete_questions_stmt = $pdo->prepare("DELETE FROM questions WHERE quiz_id = ?");
+                $delete_questions_stmt->execute([$quiz_id]);
+            } else {
+                // INSERT
+                $insert_quiz_stmt = $pdo->prepare(
+                    "INSERT INTO quizzes (slug, title, level, themes, question_count, total_max_points, source_url) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                );
+                $insert_quiz_stmt->execute([$slug, $title, $level, json_encode($themes), $question_count, $total_max_points, $source_file]);
+                $quiz_id = $pdo->lastInsertId();
+            }
+
+            // Insert new questions
+            $insert_question_stmt = $pdo->prepare(
+                "INSERT INTO questions (quiz_id, index_in_quiz, payload) VALUES (?, ?, ?)"
+            );
+            foreach ($questions as $index => $question) {
+                $insert_question_stmt->execute([$quiz_id, $index, json_encode($question)]);
+            }
+        }
+        $pdo->commit();
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        throw $e;
     }
 }
 ?>

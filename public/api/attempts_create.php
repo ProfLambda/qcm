@@ -3,6 +3,7 @@
 // Crée une nouvelle tentative de quiz pour l'utilisateur connecté.
 
 header('Content-Type: application/json');
+require_once __DIR__ . '/../inc/responses.php';
 require_once __DIR__ . '/../inc/auth.php';
 
 // Cette action nécessite d'être connecté.

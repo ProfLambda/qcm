@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/inc/db.php';
 require_once __DIR__ . '/inc/auth.php';
+require_once __DIR__ . '/inc/responses.php';
 
 if (is_logged_in()) {
     header('Location: ' . BASE_URL . 'dashboard.php');
@@ -47,14 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 3. Si tout est OK, créer l'utilisateur
     if (empty($errors)) {
+        // Déterminer le rôle : 'admin' si c'est le premier utilisateur, sinon 'user'
+        $stmt_count = $pdo->query("SELECT COUNT(*) FROM users");
+        $user_count = $stmt_count->fetchColumn();
+        $role = ($user_count == 0) ? 'admin' : 'user';
+
         $password_hash = password_hash($password, PASSWORD_ARGON2ID);
 
         $stmt = $pdo->prepare(
-            "INSERT INTO users (email, password_hash, display_name) VALUES (?, ?, ?)"
+            "INSERT INTO users (email, password_hash, display_name, role) VALUES (?, ?, ?, ?)"
         );
 
         try {
-            $stmt->execute([$email, $password_hash, $display_name ?: null]);
+            $stmt->execute([$email, $password_hash, $display_name ?: null, $role]);
             // Redirection vers la page de connexion avec un message de succès
             header('Location: ' . BASE_URL . 'login.php?success=1');
             exit;

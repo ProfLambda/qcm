@@ -7,6 +7,18 @@
  * @param array $question L'objet question (depuis le payload JSON).
  * @return int Le nombre maximum de points.
  */
+
+if (!function_exists('extract_level_from_title')) {
+    function extract_level_from_title(string $title): string {
+        $title_lower = strtolower($title);
+        if (str_contains($title_lower, 'débutant') || str_contains($title_lower, 'beginner')) return 'Débutant';
+        if (str_contains($title_lower, 'intermédiaire') || str_contains($title_lower, 'intermediate') || str_contains($title_lower, 'modeste')) return 'Intermédiaire';
+        if (str_contains($title_lower, 'avancé') || str_contains($title_lower, 'advanced')) return 'Avancé';
+        if (str_contains($title_lower, 'expert')) return 'Expert';
+        return 'Général';
+    }
+}
+
 function calculate_max_points_for_question(array $question): int
 {
     if (!isset($question['selectionType'])) {
@@ -32,13 +44,15 @@ function calculate_max_points_for_question(array $question): int
 
         case 'range':
             // Le max est le plus grand nombre de points parmi les bandes de valeurs.
-            return array_reduce($question['rangeConfig']['bands'], function ($max, $band) {
+            $bands = ($question['range'] ?? [])['bands'] ?? [];
+            return array_reduce($bands, function ($max, $band) {
                 return max($max, $band['points'] ?? 0);
             }, 0);
 
         case 'ranking':
             // Le max est le nombre d'items multiplié par les points par item correct.
-            $pointsPerItem = $question['rankingConfig']['pointsPerItem'] ?? 1;
+            $ranking_data = $question['ranking'] ?? [];
+            $pointsPerItem = $ranking_data['pointsPerItem'] ?? 1;
             $itemCount = count($question['options']);
             return $pointsPerItem * $itemCount;
 
@@ -91,8 +105,9 @@ function calculate_points_for_selection(array $question, $selection): int
         case 'range':
             // Trouve dans quelle "bande" la valeur sélectionnée tombe.
             $value = intval($selection);
-            foreach ($question['rangeConfig']['bands'] as $band) {
-                if ($value >= $band['min'] && $value <= $band['max']) {
+            $bands = ($question['range'] ?? [])['bands'] ?? [];
+            foreach ($bands as $band) {
+                if ($value >= ($band['min'] ?? 0) && $value <= ($band['max'] ?? 0)) {
                     return $band['points'] ?? 0;
                 }
             }
@@ -102,8 +117,9 @@ function calculate_points_for_selection(array $question, $selection): int
             // Compare l'ordre de la sélection à l'ordre correct.
             if (!is_array($selection)) return 0; // la sélection est un tableau d'IDs ordonné
 
-            $correctOrder = $question['rankingConfig']['correctOrder'] ?? [];
-            $pointsPerItem = $question['rankingConfig']['pointsPerItem'] ?? 1;
+            $ranking_data = $question['ranking'] ?? [];
+            $correctOrder = $ranking_data['correctOrder'] ?? [];
+            $pointsPerItem = $ranking_data['pointsPerItem'] ?? 1;
             $score = 0;
 
             $count = min(count($selection), count($correctOrder));

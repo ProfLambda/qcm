@@ -1,8 +1,8 @@
 # Projet QCM - Génération Lead Dev
 
-Ce projet est une application web complète de questionnaires QCM, générée pour être "clé en main". Elle est construite en PHP natif et JavaScript vanilla, sans aucun framework, conformément aux exigences.
+Ce projet est une application web complète de questionnaires QCM, générée pour être "clé en main". Elle est construite en PHP natif et JavaScript vanilla, sans aucun framework.
 
-[test](https://proflambda.github.io/qcm/public/oldfiles/)
+[test](https://proflambda.github.io/qcm/public/qcm_originaux/)
 
 ## Stack Technique
 
@@ -25,34 +25,7 @@ Ce projet est une application web complète de questionnaires QCM, générée po
       define('DB_USER', 'votre_user');
       define('DB_PASSWORD', 'votre_pass');
       ```
-   -  Ensuite, importez le schéma correspondant : `schema/schema_mysql.sql`.
-
-## Initialisation des Données
-
-Les questionnaires sont importés depuis une source externe (simulée ici).
-
-### 1. Via Script en Ligne de Commande (CLI)
-
-C'est la méthode recommandée pour la première initialisation ou les mises à jour.
-
-```bash
-# Placez-vous à la racine du projet
-php scripts/import_from_github.php
-```
-
-Ce script va :
-
--  Lire les sources de quiz (simulées dans `public/inc/github.php`).
--  Créer la base de données et les tables si elles n'existent pas.
--  Peupler les tables `quizzes` et `questions`.
-
-### 2. Via l'Interface Web d'Administration
-
-Une fois que vous avez créé un utilisateur et lui avez assigné le rôle `admin` manuellement dans la base de données :
-
-1. Connectez-vous avec votre compte admin.
-2. Accédez à l'URL `/admin/quizzes_import.php`.
-3. Cliquez sur le bouton "Importer / Mettre à jour les Quiz".
+   -  Ensuite, l'installation importera le schéma correspondant : `schema/schema_mysql.sql` automatiquement si DB_DRIVER = 'mysql'.
 
 ## Fonctionnalités
 
@@ -66,4 +39,4 @@ Une fois que vous avez créé un utilisateur et lui avez assigné le rôle `admi
 
 ## Accès aux anciens fichiers
 
-Le dossier `oldfiles` contient les anciens QCM. Un lien "Anciens QCM" dans la barre de navigation pointe vers `oldfiles/index.html` pour maintenir l'accès.
+Le dossier `qcm_originaux` contient les anciens QCM au format HTML. Un lien "Anciens QCM" dans la barre de navigation pointe vers `qcm_originaux/index.html` pour maintenir l'accès jusqu'à nouvel ordre.

@@ -1,0 +1,4 @@
+# Ignore the SQLite database file
+scripts/
+public/data/app.db
+scripts/import_from_github.php
