@@ -95,45 +95,28 @@ function extract_questions_from_html(string $htmlContent): array {
     }
     $js_string = $matches[1];
 
-    $placeholders = [];
-    $i = 0;
+    // 2. Remove comments
+    $js_string = preg_replace('!/\*[\s\S]*?\*/!s', '', $js_string);
+    $js_string = preg_replace('!//.*!', '', $js_string);
 
-    // 2. Protect all strings (single and double quoted) by replacing them with placeholders.
-    // Process double-quoted strings first.
-    $js_string = preg_replace_callback(
-        '/"((?:[^"\\\\]|\\\\.)*)"/',
-        function ($matches) use (&$placeholders, &$i) {
-            $placeholder = '___PLACEHOLDER_' . $i++ . '___';
-            $placeholders[$placeholder] = $matches[0]; // Store the original, valid JSON string part
-            return $placeholder;
-        },
-        $js_string
-    );
-    // Process single-quoted strings.
+    // 3. Add quotes to unquoted keys
+    $js_string = preg_replace('/([{,]\s*)([a-zA-Z0-9_]+)\s*:/', '$1"$2":', $js_string);
+
+    // 4. Convert all single-quoted strings to valid, double-quoted JSON strings.
+    // This is the most reliable way to handle mixed and escaped quotes.
     $js_string = preg_replace_callback(
         "/'((?:[^'\\\\]|\\\\.)*)'/",
-        function ($matches) use (&$placeholders, &$i) {
-            $placeholder = '___PLACEHOLDER_' . $i++ . '___';
-            // Convert the content to a valid JSON string (double-quoted, with proper escaping)
-            $placeholders[$placeholder] = json_encode($matches[1], JSON_UNESCAPED_UNICODE);
-            return $placeholder;
+        function ($matches) {
+            // Use json_encode on the matched content to handle all escaping correctly.
+            return json_encode($matches[1]);
         },
         $js_string
     );
 
-    // 3. Now that strings are protected, clean up the remaining syntax
-    $js_string = preg_replace('!/\*[\s\S]*?\*/!s', '', $js_string); // Block comments
-    $js_string = preg_replace('!//.*!', '', $js_string);             // Line comments
-    $js_string = preg_replace('/([{,]\s*)([a-zA-Z0-9_]+)\s*:/', '$1"$2":', $js_string); // Quote keys
-    $js_string = preg_replace('/,\s*([}\]])/', '$1', $js_string);     // Trailing commas
+    // 5. Remove any trailing commas
+    $js_string = preg_replace('/,\s*([}\]])/', '$1', $js_string);
 
-    // 4. Restore all placeholders.
-    if (!empty($placeholders)) {
-        // No need to sort, as placeholders are unique and won't contain each other.
-        $js_string = str_replace(array_keys($placeholders), array_values($placeholders), $js_string);
-    }
-
-    // 5. Decode the final JSON string
+    // 6. Decode the final JSON string
     $questions = json_decode($js_string, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
@@ -142,6 +125,7 @@ function extract_questions_from_html(string $htmlContent): array {
 
     return $questions;
 }
+
 
 // Execute the main function if the script is called directly
 if (php_sapi_name() === 'cli' || defined('APP_RUNNING_IN_CLI')) {
