@@ -77,6 +77,11 @@ function require_role(string $role): void
     }
 }
 
+function require_admin(): void
+{
+    require_role('admin');
+}
+
 
 /**
  * Déconnecte l'utilisateur en détruisant la session.
