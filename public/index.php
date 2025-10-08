@@ -28,47 +28,47 @@ require_once __DIR__ . '/partials/header.php';
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('quiz-list-container');
-    const errorContainer = document.getElementById('quiz-list-error');
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('quiz-list-container');
+        const errorContainer = document.getElementById('quiz-list-error');
 
-    fetch('<?= BASE_URL ?>api/quizzes.php')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.status === 'success' && data.quizzes.length > 0) {
-                container.innerHTML = ''; // Vider le message de chargement
-                data.quizzes.forEach(quiz => {
-                    const card = createQuizCard(quiz);
-                    container.appendChild(card);
-                });
-            } else if (data.quizzes.length === 0) {
-                 container.innerHTML = `<div class="col-span-full text-center p-8 text-gray-500">Aucun quiz n'est disponible pour le moment. <a href="admin/quizzes_import.php" class="text-blue-600 hover:underline">Importer des quiz ?</a></div>`;
-            } else {
-                throw new Error(data.message || 'Erreur lors de la récupération des quiz.');
-            }
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-            container.innerHTML = '';
-            errorContainer.classList.remove('hidden');
-            errorContainer.textContent = 'Impossible de charger les quiz. Veuillez réessayer plus tard.';
-        });
+        fetch('<?= BASE_URL ?>api/quizzes.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success' && data.quizzes.length > 0) {
+                    container.innerHTML = ''; // Vider le message de chargement
+                    data.quizzes.forEach(quiz => {
+                        const card = createQuizCard(quiz);
+                        container.appendChild(card);
+                    });
+                } else if (data.quizzes.length === 0) {
+                    container.innerHTML = `<div class="col-span-full text-center p-8 text-gray-500">Aucun quiz n'est disponible pour le moment. <a href="admin/#" class="text-blue-600 hover:underline">Importer des quiz ?</a></div>`;
+                } else {
+                    throw new Error(data.message || 'Erreur lors de la récupération des quiz.');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                container.innerHTML = '';
+                errorContainer.classList.remove('hidden');
+                errorContainer.textContent = 'Impossible de charger les quiz. Veuillez réessayer plus tard.';
+            });
 
-    function createQuizCard(quiz) {
-        const card = document.createElement('a');
-        card.href = `<?= BASE_URL ?>quiz.php?slug=${quiz.slug}`;
-        card.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden transform hover:-translate-y-1 block';
+        function createQuizCard(quiz) {
+            const card = document.createElement('a');
+            card.href = `<?= BASE_URL ?>quiz.php?slug=${quiz.slug}`;
+            card.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden transform hover:-translate-y-1 block';
 
-        const themes = quiz.themes ? JSON.parse(quiz.themes).map(theme =>
-            `<span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">${escapeHTML(theme)}</span>`
-        ).join(' ') : '';
+            const themes = quiz.themes ? JSON.parse(quiz.themes).map(theme =>
+                `<span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">${escapeHTML(theme)}</span>`
+            ).join(' ') : '';
 
-        card.innerHTML = `
+            card.innerHTML = `
             <div class="p-6">
                 <div class="flex justify-between items-start mb-2">
                     <h3 class="text-xl font-bold text-gray-900">${escapeHTML(quiz.title)}</h3>
@@ -92,25 +92,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="text-blue-600 font-semibold hover:text-blue-800">Commencer le quiz &rarr;</span>
             </div>
         `;
-        return card;
-    }
-
-    function getLevelColor(level) {
-        switch (level.toLowerCase()) {
-            case 'débutant': return 'bg-green-500';
-            case 'intermédiaire': return 'bg-yellow-500';
-            case 'avancé': return 'bg-red-500';
-            case 'expert': return 'bg-purple-600';
-            default: return 'bg-gray-500';
+            return card;
         }
-    }
 
-    function escapeHTML(str) {
-        const p = document.createElement('p');
-        p.appendChild(document.createTextNode(str));
-        return p.innerHTML;
-    }
-});
+        function getLevelColor(level) {
+            switch (level.toLowerCase()) {
+                case 'débutant':
+                    return 'bg-green-500';
+                case 'intermédiaire':
+                    return 'bg-yellow-500';
+                case 'avancé':
+                    return 'bg-red-500';
+                case 'expert':
+                    return 'bg-purple-600';
+                default:
+                    return 'bg-gray-500';
+            }
+        }
+
+        function escapeHTML(str) {
+            const p = document.createElement('p');
+            p.appendChild(document.createTextNode(str));
+            return p.innerHTML;
+        }
+    });
 </script>
 
 <?php require_once __DIR__ . '/partials/footer.php'; ?>

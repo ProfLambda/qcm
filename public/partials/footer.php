@@ -27,7 +27,7 @@
                 <ul class="space-y-2">
                     <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white transition">Documentation API</a></li>
-                    <li><a href="<?= BASE_URL ?>../oldfiles/index.html" class="text-gray-400 hover:text-white transition" target="_blank">Archives QCM</a></li>
+                    <li><a href="<?= BASE_URL ?>../qcm_originaux/index.html" class="text-gray-400 hover:text-white transition" target="_blank">Archives QCM</a></li>
                 </ul>
             </div>
 
@@ -56,4 +56,5 @@
 
 <script src="<?= BASE_URL ?>assets/app.js" type="module"></script>
 </body>
+
 </html>

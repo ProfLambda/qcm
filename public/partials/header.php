@@ -40,7 +40,7 @@ $current_user = current_user();
             <div class="hidden md:flex items-center space-x-6">
                 <a href="<?= BASE_URL ?>#catalogue" class="text-gray-700 hover:text-blue-600">Catalogue</a>
                 <a href="<?= BASE_URL ?>dashboard.php" class="text-gray-700 hover:text-blue-600">Tableau de bord</a>
-                <a href="<?= BASE_URL ?>../oldfiles/index.html" class="text-gray-700 hover:text-blue-600" target="_blank">Anciens QCM</a>
+                <a href="<?= BASE_URL ?>../qcm_originaux/index.html" class="text-gray-700 hover:text-blue-600" target="_blank">Anciens QCM</a>
                 <span class="h-6 w-px bg-gray-300" aria-hidden="true"></span>
                 <?php if ($current_user): ?>
                     <span class="text-gray-600">Bonjour, <?= htmlspecialchars($current_user['display_name'] ?: $current_user['email']) ?></span>
@@ -62,7 +62,7 @@ $current_user = current_user();
                     <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                         <a href="<?= BASE_URL ?>#catalogue" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Catalogue</a>
                         <a href="<?= BASE_URL ?>dashboard.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tableau de bord</a>
-                        <a href="<?= BASE_URL ?>../oldfiles/index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" target="_blank">Anciens QCM</a>
+                        <a href="<?= BASE_URL ?>../qcm_originaux/index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" target="_blank">Anciens QCM</a>
                         <div class="border-t my-1"></div>
                         <?php if ($current_user): ?>
                             <div class="px-4 py-2 text-sm text-gray-500">
